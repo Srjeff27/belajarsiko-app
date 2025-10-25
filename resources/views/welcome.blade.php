@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Belajar Siko - Platform Belajar Online Terdepan</title>
-    
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%234f46e5'><path stroke-linecap='round' stroke-linejoin='round' d='M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z' /><path stroke-linecap='round' stroke-linejoin='round' d='M12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM17.25 15a.75.75 0 100-1.5.75.75 0 000 1.5z' /></svg>">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
@@ -24,13 +26,31 @@
             transform: translateY(-8px);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
+
+        /* [Tambah] Kelas untuk animasi show/hide sederhana */
+        .mobile-menu-hidden {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-top-width: 0;
+            /* Sembunyikan border saat tertutup */
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .mobile-menu-visible {
+            max-height: 500px;
+            /* Sesuaikan jika menu lebih tinggi */
+            transition: max-height 0.4s ease-in;
+            border-top-width: 1px;
+            /* Tampilkan border saat terbuka */
+        }
     </style>
 </head>
 
 <body class="antialiased font-sans bg-gray-50 text-gray-800">
 
-    <header x-data="{ open: false }"
-        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-2">
@@ -78,31 +98,31 @@
                     @endif
                 </div>
 
-                <button @click="open = !open" id="mobile-menu-button"
-                    class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600">
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
         </div>
 
-        <div x-show="open" @click.away="open = false" id="mobile-menu"
-            class="md:hidden border-t border-gray-200" x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95">
+        <div id="mobile-menu" class="md:hidden mobile-menu-hidden border-gray-200">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#beranda" @click="open = false"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Beranda</a>
-                <a href="#fitur" @click="open = false"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Fitur</a>
-                <a href="#kursus" @click="open = false"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Kursus</a>
-                <a href="#testimoni" @click="open = false"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Testimoni</a>
+                <a href="#beranda"
+                    class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Beranda</a>
+                <a href="#fitur"
+                    class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Fitur</a>
+                <a href="#kursus"
+                    class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Kursus</a>
+                <a href="#testimoni"
+                    class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Testimoni</a>
             </div>
             <div class="border-t border-gray-200 px-4 py-4 space-y-3">
                 @if (Route::has('login'))
@@ -374,7 +394,7 @@
                                 <path
                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
-                            </div>
+                        </div>
                         <p class="text-gray-600 italic">"Kursus web development di Belajar Siko sangat lengkap dan
                             terstruktur. Saya dari pemula sekarang sudah bisa membuat website profesional. Terima
                             kasih!"</p>
@@ -395,7 +415,7 @@
                                 <path
                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
-                            </div>
+                        </div>
                         <p class="text-gray-600 italic">"Sebagai seorang pemula di bidang desain, kursus UI/UX di
                             Belajar Siko sangat membantu. Materinya mudah dipahami dan instrukturnya sangat
                             berpengalaman."</p>
@@ -416,7 +436,7 @@
                                 <path
                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
-                            </div>
+                        </div>
                         <p class="text-gray-600 italic">"Kursus data science di Belajar Siko sangat praktis dan
                             aplikatif. Saya langsung bisa menerapkan ilmu yang didapat di pekerjaan. Sangat
                             recommended!"</p>
@@ -602,7 +622,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                             </svg>
-                            <span class="text-gray-400">Jl. Pendidikan No. 123, Jakarta</span>
+                            <span class="text-gray-400">Jl. WR. Supratman, Kandang Limun, Kec. Muara Bangka Hulu,
+                                Sumatera, Bengkulu</span>
                         </li>
                         <li class="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -611,7 +632,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                             </svg>
-                            <span class="text-gray-400">info@belajarsiko.com</span>
+                            <span class="text-gray-400">belajarsiko@gmail.com</span>
                         </li>
                         <li class="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -631,6 +652,46 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = mobileMenuButton.querySelector('svg:first-child'); // Ikon hamburger
+            const closeIcon = mobileMenuButton.querySelector('svg:last-child'); // Ikon X
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link'); // Semua link di menu mobile
+
+            // Fungsi untuk toggle menu
+            function toggleMenu() {
+                mobileMenu.classList.toggle('mobile-menu-hidden');
+                mobileMenu.classList.toggle('mobile-menu-visible');
+                hamburgerIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            }
+
+            // Event listener untuk tombol hamburger
+            mobileMenuButton.addEventListener('click', toggleMenu);
+
+            // Event listener untuk menutup menu saat link diklik (untuk navigasi # anchor)
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('mobile-menu-visible')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // (Opsional) Menutup menu saat klik di luar area menu
+            document.addEventListener('click', function(event) {
+                const isClickInsideHeader = mobileMenuButton.contains(event.target);
+                const isClickInsideMenu = mobileMenu.contains(event.target);
+
+                if (!isClickInsideHeader && !isClickInsideMenu && mobileMenu.classList.contains(
+                        'mobile-menu-visible')) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
 
 </body>
 
