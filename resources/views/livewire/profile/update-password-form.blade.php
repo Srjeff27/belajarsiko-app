@@ -39,41 +39,64 @@ new class extends Component
 }; ?>
 
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
+    <header class="pb-6 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <x-heroicon-o-key class="w-6 h-6 text-indigo-500"/>
+            {{ __('Ubah Kata Sandi') }}
         </h2>
-
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            {{ __('Pastikan akun Anda menggunakan kata sandi yang panjang dan acak agar tetap aman.') }}
         </p>
     </header>
 
     <form wire:submit="updatePassword" class="mt-6 space-y-6">
+        {{-- Current Password --}}
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
+            <label for="update_password_current_password" class="sr-only">{{ __('Current Password') }}</label>
+             <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                   <x-heroicon-o-lock-closed class="w-5 h-5 text-gray-400"/>
+                </div>
+                <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password" type="password" class="block w-full pl-10" autocomplete="current-password" placeholder="Kata Sandi Saat Ini" aria-label="{{ __('Current Password') }}" />
+            </div>
             <x-input-error :messages="$errors->get('current_password')" class="mt-2" />
         </div>
 
+        {{-- New Password --}}
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <label for="update_password_password" class="sr-only">{{ __('New Password') }}</label>
+             <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                   <x-heroicon-o-lock-closed class="w-5 h-5 text-gray-400"/>
+                </div>
+                <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="block w-full pl-10" autocomplete="new-password" placeholder="Kata Sandi Baru" aria-label="{{ __('New Password') }}"/>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        {{-- Confirm Password --}}
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <label for="update_password_password_confirmation" class="sr-only">{{ __('Confirm Password') }}</label>
+            <div class="relative">
+                 <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                   <x-heroicon-o-lock-closed class="w-5 h-5 text-gray-400"/>
+                 </div>
+                 <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" name="password_confirmation" type="password" class="block w-full pl-10" autocomplete="new-password" placeholder="Konfirmasi Kata Sandi Baru" aria-label="{{ __('Confirm Password') }}"/>
+            </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        {{-- Save Button & Action Message --}}
+        <div class="flex items-center gap-4 pt-2">
+            <x-primary-button>
+                <x-heroicon-o-check class="w-5 h-5 mr-2 -ml-1"/>
+                {{ __('Simpan') }}
+            </x-primary-button>
 
-            <x-action-message class="me-3" on="password-updated">
-                {{ __('Saved.') }}
-            </x-action-message>
+             <x-action-message class="me-3 flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400" on="password-updated">
+                 <x-heroicon-s-check-circle class="w-4 h-4 text-green-500"/>
+                 {{ __('Tersimpan.') }}
+             </x-action-message>
         </div>
     </form>
 </section>
