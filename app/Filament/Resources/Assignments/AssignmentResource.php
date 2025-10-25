@@ -9,6 +9,7 @@ use App\Filament\Resources\Assignments\Schemas\AssignmentForm;
 use App\Filament\Resources\Assignments\Tables\AssignmentsTable;
 use App\Models\Assignment;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -18,7 +19,8 @@ class AssignmentResource extends Resource
 {
     protected static ?string $model = Assignment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
+    protected static string|UnitEnum|null $navigationGroup = 'Pembelajaran';
 
     protected static ?string $navigationLabel = 'Tugas';
     protected static ?string $pluralModelLabel = 'Tugas';

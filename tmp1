@@ -9,7 +9,6 @@ use App\Filament\Resources\AssignmentSubmissions\Schemas\AssignmentSubmissionFor
 use App\Filament\Resources\AssignmentSubmissions\Tables\AssignmentSubmissionsTable;
 use App\Models\AssignmentSubmission;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +19,7 @@ class AssignmentSubmissionResource extends Resource
     protected static ?string $model = AssignmentSubmission::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
-    protected static string|UnitEnum|null $navigationGroup = 'Pembelajaran';
+    public static string|\\UnitEnum|null $navigationGroup = 'Pembelajaran';
 
     protected static ?string $navigationLabel = 'Pengumpulan Tugas';
     protected static ?string $pluralModelLabel = 'Pengumpulan Tugas';
@@ -52,4 +51,5 @@ class AssignmentSubmissionResource extends Resource
         ];
     }
 }
+
 

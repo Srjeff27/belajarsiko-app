@@ -14,6 +14,12 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>[x-cloak]{ display:none !important; }</style>
+    <script>
+        // Force light mode regardless of device theme
+        document.documentElement.classList.remove('dark');
+    </script>
+    <!-- Alpine (if any guest page uses Alpine-powered components) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
@@ -30,11 +36,11 @@
         </a>
     </div>
     <div
-        class="min-h-screen flex flex-col justify-center items-center pt-20 pb-6 bg-gradient-to-br from-indigo-50 via-white to-blue-100 dark:bg-gray-900 px-4 sm:px-0">
+        class="min-h-screen flex flex-col justify-center items-center pt-20 pb-6 bg-gradient-to-br from-indigo-50 via-white to-blue-100 px-4 sm:px-0">
         {{-- [Ubah] Hapus sm:justify-center, hapus sm:pt-0 --}}
 
         <div
-            class="w-full sm:max-w-md p-8 bg-white dark:bg-gray-800 shadow-xl overflow-hidden rounded-2xl">
+            class="w-full sm:max-w-md p-8 bg-white shadow-xl overflow-hidden rounded-2xl">
             {{-- [Ubah] Hapus sm:rounded-2xl, jadikan rounded-2xl saja --}}
             {{ $slot }}
         </div>
