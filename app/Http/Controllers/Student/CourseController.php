@@ -15,8 +15,19 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        $course->load(['lessons.assignments.submissions']);
-        return view('student.course-show', compact('course'));
+        $user = auth()->user();
+
+        $course->load(['lessons' => function ($q) {
+            $q->orderBy('position');
+        }, 'lessons.assignments.submissions']);
+
+        $isEnrolled = $user->enrollments()->where('course_id', $course->id)->exists();
+
+        $completedLessons = $user->lessonCompletions()
+            ->whereIn('lesson_id', $course->lessons->pluck('id'))
+            ->pluck('lesson_id');
+
+        return view('student.course-show', compact('course', 'isEnrolled', 'completedLessons'));
     }
 }
 

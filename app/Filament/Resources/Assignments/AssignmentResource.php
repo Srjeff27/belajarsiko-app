@@ -20,6 +20,10 @@ class AssignmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Tugas';
+    protected static ?string $pluralModelLabel = 'Tugas';
+    protected static ?string $modelLabel = 'Tugas';
+
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema

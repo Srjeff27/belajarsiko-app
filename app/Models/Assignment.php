@@ -14,6 +14,10 @@ class Assignment extends Model
         'lesson_id', 'title', 'description', 'due_date',
     ];
 
+    protected $casts = [
+        'due_date' => 'datetime',
+    ];
+
     public function lesson()
     {
         return $this->belongsTo(Lesson::class);
@@ -24,4 +28,3 @@ class Assignment extends Model
         return $this->hasMany(AssignmentSubmission::class);
     }
 }
-

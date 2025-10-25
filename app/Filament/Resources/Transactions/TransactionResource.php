@@ -20,6 +20,10 @@ class TransactionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Transaksi';
+    protected static ?string $pluralModelLabel = 'Transaksi';
+    protected static ?string $modelLabel = 'Transaksi';
+
     public static function form(Schema $schema): Schema
     {
         return TransactionForm::configure($schema);

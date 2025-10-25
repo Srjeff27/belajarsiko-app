@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Enrollment;
+use App\Models\Assignment;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -31,9 +32,21 @@ class DashboardController extends Controller
             $progress[$course->id] = $percent;
         }
 
+        $pendingAssignments = Assignment::with(['lesson.course', 'submissions' => function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }])
+            ->whereHas('lesson.course.enrollments', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->orderByRaw('CASE WHEN due_date IS NULL THEN 1 ELSE 0 END, due_date ASC')
+            ->limit(5)
+            ->get();
+
         return view('dashboard', [
             'enrollments' => $enrollments,
             'progress' => $progress,
+            'pendingAssignments' => $pendingAssignments,
         ]);
     }
 }
+

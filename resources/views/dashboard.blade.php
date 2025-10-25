@@ -10,9 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 md:p-8 text-gray-900 dark:text-gray-100">
                     
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                        📚 Kelas Saya
-                    </h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Kelas Saya</h3>
 
                     @if(isset($enrollments) && $enrollments->count())
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,7 +74,7 @@
                             <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
                                 Sepertinya Anda belum mendaftar di kelas manapun. Ayo mulai perjalanan belajar Anda sekarang!
                             </p>
-                            <a href="#" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition duration-300">
+                            <a href="{{ route('student.courses') }}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition duration-300">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                 </svg>
@@ -89,3 +87,4 @@
         </div>
     </div>
 </x-app-layout>
+

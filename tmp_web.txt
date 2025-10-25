@@ -8,8 +8,6 @@ use App\Http\Controllers\Student\AssignmentSubmissionController;
 use App\Http\Controllers\Student\CheckoutController;
 use App\Http\Controllers\Admin\TransactionProofController;
 use App\Http\Controllers\CertificateController;
-use App\Http\Controllers\Student\StudentPortalController;
-use App\Http\Controllers\Student\EnrollmentController;
 
 Route::view('/', 'welcome');
 
@@ -25,25 +23,19 @@ require __DIR__.'/auth.php';
 
 // Student-facing routes
 Route::middleware(['auth'])->group(function () {
-    // Sidebar pages powered by controllers
-    Route::get('/courses', [StudentPortalController::class, 'courses'])->name('student.courses');
-    Route::get('/assignments', [StudentPortalController::class, 'assignments'])->name('student.assignments');
-    Route::get('/certificates', [StudentPortalController::class, 'certificates'])->name('student.certificates');
+    // Sidebar pages
+    Route::view('/courses', 'student.courses-index')->name('student.courses');
+    Route::view('/assignments', 'student.assignments-index')->name('student.assignments');
+    Route::view('/certificates', 'student.certificates-index')->name('student.certificates');
 
-    // Course show and enroll
     Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
-    Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])->name('courses.enroll');
-
-    // Lesson completion & assignment submission
     Route::post('/lessons/{lesson}/complete', [LessonCompletionController::class, 'store'])->name('lessons.complete');
     Route::post('/assignments/{assignment}/submit', [AssignmentSubmissionController::class, 'store'])->name('assignments.submit');
 
-    // Checkout flow (manual QRIS)
     Route::get('/checkout/course/{course}', [CheckoutController::class, 'show'])->name('checkout.course');
     Route::post('/checkout/course/{course}/confirm', [CheckoutController::class, 'confirm'])->name('checkout.course.confirm');
     Route::get('/payment/waiting', [CheckoutController::class, 'waiting'])->name('student.payment.waiting');
 
-    // Certificates
     Route::get('/certificate/{course}', [CertificateController::class, 'download'])->name('certificate.download');
 });
 
@@ -51,4 +43,5 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/admin/transactions/{transaction}/proof', [TransactionProofController::class, 'show'])
     ->middleware(['auth'])
     ->name('admin.transactions.proof');
+
 

@@ -20,6 +20,10 @@ class AssignmentSubmissionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Pengumpulan Tugas';
+    protected static ?string $pluralModelLabel = 'Pengumpulan Tugas';
+    protected static ?string $modelLabel = 'Pengumpulan Tugas';
+
     public static function form(Schema $schema): Schema
     {
         return AssignmentSubmissionForm::configure($schema);

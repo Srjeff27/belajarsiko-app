@@ -20,6 +20,10 @@ class CourseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Kelas';
+    protected static ?string $pluralModelLabel = 'Kelas';
+    protected static ?string $modelLabel = 'Kelas';
+
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
