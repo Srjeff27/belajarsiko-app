@@ -17,7 +17,7 @@ new #[Layout('layouts.guest')] class extends Component {
     /**
      * Handle an incoming registration request.
      */
-    public function register(): void
+    public function register()
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -39,7 +39,12 @@ new #[Layout('layouts.guest')] class extends Component {
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        return redirect()->route('dashboard')
+            ->with('flash', [
+                'type' => 'success',
+                'title' => 'Oh Yeah!',
+                'message' => 'Pendaftaran berhasil. Anda sudah masuk.',
+            ]);
     }
 }; ?>
 
@@ -111,8 +116,23 @@ new #[Layout('layouts.guest')] class extends Component {
                             d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                     </svg>
                 </div>
-                <x-text-input wire:model="password" id="password" class="block w-full pl-10" type="password"
-                    name="password" required autocomplete="new-password" placeholder="Kata Sandi" />
+                <x-text-input
+                    wire:model="password"
+                    id="password"
+                    class="block w-full pl-10 pr-10"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Kata Sandi" />
+
+                <button type="button"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md"
+                        onclick="(function(btn){ const input=document.getElementById('password'); const isPwd=input.type==='password'; input.type=isPwd?'text':'password'; btn.querySelector('.icon-eye').classList.toggle('hidden', !isPwd); btn.querySelector('.icon-eye-slash').classList.toggle('hidden', isPwd); })(this)"
+                        aria-label="Tampilkan/Sembunyikan password">
+                    <span class="icon-eye"><x-heroicon-o-eye class="w-5 h-5" /></span>
+                    <span class="icon-eye-slash hidden"><x-heroicon-o-eye-slash class="w-5 h-5" /></span>
+                </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -128,9 +148,23 @@ new #[Layout('layouts.guest')] class extends Component {
                             d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                     </svg>
                 </div>
-                <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block w-full pl-10"
-                    type="password" name="password_confirmation" required autocomplete="new-password"
+                <x-text-input
+                    wire:model="password_confirmation"
+                    id="password_confirmation"
+                    class="block w-full pl-10 pr-10"
+                    type="password"
+                    name="password_confirmation"
+                    required
+                    autocomplete="new-password"
                     placeholder="Konfirmasi Kata Sandi" />
+
+                <button type="button"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md"
+                        onclick="(function(btn){ const input=document.getElementById('password_confirmation'); const isPwd=input.type==='password'; input.type=isPwd?'text':'password'; btn.querySelector('.icon-eye').classList.toggle('hidden', !isPwd); btn.querySelector('.icon-eye-slash').classList.toggle('hidden', isPwd); })(this)"
+                        aria-label="Tampilkan/Sembunyikan password">
+                    <span class="icon-eye"><x-heroicon-o-eye class="w-5 h-5" /></span>
+                    <span class="icon-eye-slash hidden"><x-heroicon-o-eye-slash class="w-5 h-5" /></span>
+                </button>
             </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>

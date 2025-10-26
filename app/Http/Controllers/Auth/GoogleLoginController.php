@@ -23,7 +23,11 @@ class GoogleLoginController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Google login failed: ' . $e->getMessage());
+            return redirect('/login')->with('flash', [
+                'type' => 'error',
+                'title' => 'Login Gagal',
+                'message' => 'Google login gagal: ' . $e->getMessage(),
+            ]);
         }
 
         $user = User::where('google_id', $googleUser->getId())->first();
@@ -55,6 +59,10 @@ class GoogleLoginController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/dashboard');
+        return redirect()->intended('/dashboard')->with('flash', [
+            'type' => 'success',
+            'title' => 'Oh Yeah!',
+            'message' => 'Anda berhasil masuk dengan Google.',
+        ]);
     }
 }

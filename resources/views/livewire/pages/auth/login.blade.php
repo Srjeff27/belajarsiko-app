@@ -12,7 +12,7 @@ new #[Layout('layouts.guest')] class extends Component
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
+    public function login()
     {
         $this->validate();
 
@@ -20,7 +20,12 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        return redirect()->intended(route('dashboard'))
+            ->with('flash', [
+                'type' => 'success',
+                'title' => 'Oh Yeah!',
+                'message' => 'Anda berhasil masuk ke akun.',
+            ]);
     }
 }; ?>
 
@@ -73,8 +78,25 @@ new #[Layout('layouts.guest')] class extends Component
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                    <x-heroicon-o-lock-closed class="w-5 h-5 text-gray-400"/>
                 </div>
-                <x-text-input wire:model="form.password" id="password" class="block w-full pl-10" type="password"
-                    name="password" required autocomplete="current-password" placeholder="Kata Sandi" aria-label="{{ __('Password') }}"/>
+                <x-text-input
+                    wire:model="form.password"
+                    id="password"
+                    class="block w-full pl-10 pr-10"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="Kata Sandi"
+                    aria-label="{{ __('Password') }}"
+                />
+
+                <button type="button"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md"
+                        onclick="(function(btn){ const input=document.getElementById('password'); const isPwd=input.type==='password'; input.type=isPwd?'text':'password'; btn.querySelector('.icon-eye').classList.toggle('hidden', !isPwd); btn.querySelector('.icon-eye-slash').classList.toggle('hidden', isPwd); })(this)"
+                        aria-label="Tampilkan/Sembunyikan password">
+                    <span class="icon-eye"><x-heroicon-o-eye class="w-5 h-5" /></span>
+                    <span class="icon-eye-slash hidden"><x-heroicon-o-eye-slash class="w-5 h-5" /></span>
+                </button>
             </div>
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>

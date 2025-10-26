@@ -20,12 +20,11 @@
         // Force light mode regardless of OS or saved preference
         document.documentElement.classList.remove('dark');
     </script>
-    <!-- Alpine.js for dropdowns, toggles, etc. -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- No Alpine needed; interactions handled with small inline JS in components -->
 </head>
 
 <body class="font-sans antialiased">
-    <div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-50 flex">
+    <div class="min-h-screen bg-gray-50 flex">
 
         <!-- Sidebar (hidden on mobile, visible on lg+) -->
         <aside class="hidden lg:flex lg:flex-col w-64 bg-white border-r border-gray-200 sticky top-0 h-screen">
@@ -147,9 +146,9 @@
 
                         <!-- Kanan: User Dropdown -->
                         <div class="flex items-center">
-                            <div x-data="{ dropdownOpen: false }" class="relative ml-3">
+                            <div class="relative ml-3">
                                 <div>
-                                    <button @click="dropdownOpen = !dropdownOpen" type="button"
+                                    <button onclick="toggleUserMenu(event)" type="button"
                                         class="flex text-sm bg-white rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="sr-only">Open user menu</span>
@@ -160,16 +159,10 @@
                                         </span>
                                     </button>
                                 </div>
-                                <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" @keydown.escape.window="dropdownOpen = false"
-                                    x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-75"
-                                    x-transition:leave-start="transform opacity-100 scale-100"
-                                    x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                                <div id="user-menu"
+                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 hidden"
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
-                                    tabindex="-1" x-cloak>
+                                    tabindex="-1">
 
                                     <div class="px-4 py-3 border-b border-gray-200">
                                         <p class="text-sm font-medium text-gray-900 truncate">
@@ -258,6 +251,36 @@
 
         </div>
     </div>
+    <x-flash-popup />
+    <script>
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const btn = document.getElementById('user-menu-button');
+            const menu = document.getElementById('user-menu');
+            if (!btn || !menu) return;
+            const hidden = menu.classList.toggle('hidden');
+            btn.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+        }
+        (function () {
+            const btn = document.getElementById('user-menu-button');
+            const menu = document.getElementById('user-menu');
+            if (!btn || !menu) return;
+            document.addEventListener('click', function (e) {
+                if (!menu.classList.contains('hidden')) {
+                    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                        menu.classList.add('hidden');
+                        btn.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    menu.classList.add('hidden');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

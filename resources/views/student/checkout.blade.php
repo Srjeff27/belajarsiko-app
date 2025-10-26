@@ -27,7 +27,7 @@
 
                         <div>
                             <p class="font-medium text-gray-700 dark:text-gray-300 mb-2">Scan QRIS Berikut:</p>
-                            <img src="/images/qris.png" alt="QRIS Code"
+                            <img src="{{ asset('images/qris.jpg') }}" alt="QRIS Code"
                                  class="w-full max-w-[280px] border-4 border-gray-200 dark:border-gray-600 rounded-lg shadow-md mx-auto md:mx-0" />
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center md:text-left">
                                 Gunakan aplikasi E-Wallet atau Mobile Banking Anda untuk melakukan pembayaran.

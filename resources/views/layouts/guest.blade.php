@@ -18,8 +18,7 @@
         // Force light mode regardless of device theme
         document.documentElement.classList.remove('dark');
     </script>
-    <!-- Alpine (if any guest page uses Alpine-powered components) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- No Alpine needed; interactions handled with small inline JS in components -->
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
@@ -45,6 +44,7 @@
             {{ $slot }}
         </div>
     </div>
+    <x-flash-popup />
 </body>
 
 </html>
