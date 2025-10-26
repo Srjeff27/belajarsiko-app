@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Belajar Siko - Platform Belajar Online Terdepan</title>
+    <title>BelajarSiko - Platform Belajar Online Terdepan</title>
 
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%234f46e5'><path stroke-linecap='round' stroke-linejoin='round' d='M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z' /><path stroke-linecap='round' stroke-linejoin='round' d='M12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM17.25 15a.75.75 0 100-1.5.75.75 0 000 1.5z' /></svg>">
@@ -63,7 +63,7 @@
                                 d="M12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM17.25 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
                         </svg>
                     </div>
-                    <span class="text-xl font-bold text-gray-800">Belajar Siko</span>
+                    <span class="text-xl font-bold text-gray-800">BelajarSiko</span>
                 </div>
 
                 <nav class="hidden md:flex space-x-8">
@@ -89,7 +89,7 @@
                                 class="text-gray-600 hover:text-indigo-600 font-medium transition-colors duration-300">Masuk</a>
 
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
+        <a href="{{ route('register') }}"
                                     class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
                                     Daftar Gratis
                                 </a>
@@ -154,7 +154,7 @@
                 <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                     <div class="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
                         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">Belajar Lebih Mudah
-                            Dengan <span class="text-yellow-300">Belajar Siko</span></h1>
+                            Dengan <span class="text-yellow-300">BelajarSiko</span></h1>
                         <p class="text-xl mb-8 text-indigo-100">Platform belajar online terdepan dengan ribuan materi
                             berkualitas untuk semua tingkat kemampuan. Tingkatkan keterampilan Anda kapan saja, di mana
                             saja.</p>
@@ -180,7 +180,7 @@
         <section id="fitur" class="py-20 lg:py-24 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Mengapa Memilih Belajar Siko?</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Mengapa Memilih BelajarSiko?</h2>
                     <p class="text-gray-600 max-w-2xl mx-auto text-lg">Platform kami dirancang untuk memberikan
                         pengalaman belajar terbaik dengan fitur-fitur unggulan.</p>
                 </div>
@@ -375,7 +375,7 @@
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Apa Kata Mereka?</h2>
                     <p class="text-gray-600 max-w-2xl mx-auto text-lg">Dengarkan pengalaman langsung dari para siswa
-                        yang telah bergabung dengan Belajar Siko.</p>
+                        yang telah bergabung dengan BelajarSiko.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -395,7 +395,7 @@
                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                         </div>
-                        <p class="text-gray-600 italic">"Kursus web development di Belajar Siko sangat lengkap dan
+                        <p class="text-gray-600 italic">"Kursus web development di BelajarSiko sangat lengkap dan
                             terstruktur. Saya dari pemula sekarang sudah bisa membuat website profesional. Terima
                             kasih!"</p>
                     </div>
@@ -417,7 +417,7 @@
                             </svg>
                         </div>
                         <p class="text-gray-600 italic">"Sebagai seorang pemula di bidang desain, kursus UI/UX di
-                            Belajar Siko sangat membantu. Materinya mudah dipahami dan instrukturnya sangat
+                            BelajarSiko sangat membantu. Materinya mudah dipahami dan instrukturnya sangat
                             berpengalaman."</p>
                     </div>
 
@@ -437,7 +437,7 @@
                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                         </div>
-                        <p class="text-gray-600 italic">"Kursus data science di Belajar Siko sangat praktis dan
+                        <p class="text-gray-600 italic">"Kursus data science di BelajarSiko sangat praktis dan
                             aplikatif. Saya langsung bisa menerapkan ilmu yang didapat di pekerjaan. Sangat
                             recommended!"</p>
                     </div>
@@ -477,7 +477,7 @@
                                     d="M12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM17.25 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
                             </svg>
                         </div>
-                        <span class="text-xl font-bold">Belajar Siko</span>
+                        <span class="text-xl font-bold">BelajarSiko</span>
                     </div>
                     <p class="text-gray-400 mb-4">Platform belajar online terdepan untuk mengembangkan keterampilan
                         dan karir Anda.</p>
@@ -648,7 +648,7 @@
             </div>
 
             <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} Belajar Siko. Semua hak cipta dilindungi.</p>
+                <p>&copy; {{ date('Y') }} BelajarSiko. Semua hak cipta dilindungi.</p>
             </div>
         </div>
     </footer>

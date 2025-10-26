@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TransactionProofController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Student\StudentPortalController;
 use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Auth\GoogleLoginController;
 
 Route::view('/', 'welcome');
 
@@ -22,6 +23,9 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+Route::get('/auth/google/redirect', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Student-facing routes
 Route::middleware(['auth'])->group(function () {

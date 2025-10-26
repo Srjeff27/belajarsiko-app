@@ -45,7 +45,7 @@ new #[Layout('layouts.guest')] class extends Component
             Selamat Datang Kembali!
         </h1>
         <p class="mt-1 text-sm text-gray-600">
-            Masuk ke akun Belajar Siko Anda.
+            Masuk ke akun BelajarSiko Anda.
         </p>
     </div>
 
@@ -122,7 +122,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     <!-- Social Login Button (Bonus) -->
     <div>
-        <a href="#"
+        <a href="{{ route('google.redirect') }}"
             class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">
             <!-- Google Icon -->
             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">

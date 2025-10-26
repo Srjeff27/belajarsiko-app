@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('Belajar Siko')
+            ->brandName('BelajarSiko')
             // ->brandLogo(view('filament.brand'))
             ->brandLogoHeight('1.75rem')
             ->login()
@@ -60,4 +60,3 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 }
-
