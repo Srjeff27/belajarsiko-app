@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Kumpulkan link Google Drive tugas Anda.',
             'due_date' => now()->addWeek(),
         ]);
+        $this->call(MentorSeeder::class);
     }
 }
 
