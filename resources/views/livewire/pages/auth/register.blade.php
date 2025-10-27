@@ -40,11 +40,11 @@ new #[Layout('layouts.guest')] class extends Component {
         Auth::login($user);
 
         return redirect()->route('dashboard')
-            ->with('flash', [
-                'type' => 'success',
-                'title' => 'Oh Yeah!',
-                'message' => 'Pendaftaran berhasil. Anda sudah masuk.',
-            ]);
+    ->with('flash', [
+        'type' => 'success',
+        'title' => 'Pendaftaran Berhasil',
+        'message' => 'Akun Anda telah dibuat. Selamat datang!', 
+    ]);
     }
 }; ?>
 

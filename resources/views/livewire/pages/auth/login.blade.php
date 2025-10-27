@@ -20,12 +20,12 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        return redirect()->intended(route('dashboard'))
-            ->with('flash', [
-                'type' => 'success',
-                'title' => 'Oh Yeah!',
-                'message' => 'Anda berhasil masuk ke akun.',
-            ]);
+       return redirect()->intended(route('dashboard'))
+    ->with('flash', [
+        'type' => 'success',
+        'title' => 'Login Berhasil',
+        'message' => 'Selamat datang kembali! Anda berhasil masuk.',
+    ]);
     }
 }; ?>
 

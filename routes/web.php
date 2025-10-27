@@ -15,7 +15,7 @@ use App\Http\Controllers\Auth\GoogleLoginController;
 Route::view('/', 'welcome');
 
 Route::get('dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:student'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')
@@ -28,7 +28,7 @@ Route::get('/auth/google/redirect', [GoogleLoginController::class, 'redirectToGo
 Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Student-facing routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:student'])->group(function () {
     // Sidebar pages powered by controllers
     Route::get('/courses', [StudentPortalController::class, 'courses'])->name('student.courses');
     Route::get('/assignments', [StudentPortalController::class, 'assignments'])->name('student.assignments');
