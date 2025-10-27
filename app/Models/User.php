@@ -69,6 +69,11 @@ class User extends Authenticatable implements FilamentUser
 
     public function courses()
     {
+        return $this->hasMany(Course::class, 'mentor_id');
+    }
+
+    public function enrolledCourses()
+    {
         return $this->belongsToMany(Course::class, 'enrollments');
     }
 
