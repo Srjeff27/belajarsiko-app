@@ -11,12 +11,17 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'thumbnail', 'price', 'is_premium',
+        'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id',
     ];
 
     public function lessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('position');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function enrollments()
@@ -34,4 +39,3 @@ class Course extends Model
         return $this->hasMany(Certificate::class);
     }
 }
-

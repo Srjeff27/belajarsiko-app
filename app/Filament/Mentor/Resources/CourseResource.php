@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Filament\Mentor\Resources;
+
+use App\Filament\Mentor\Resources\CourseResource\Pages\CreateCourse;
+use App\Filament\Mentor\Resources\CourseResource\Pages\EditCourse;
+use App\Filament\Mentor\Resources\CourseResource\Pages\ListCourses;
+use App\Filament\Mentor\Resources\CourseResource\RelationManagers\EnrollmentsRelationManager;
+use App\Filament\Mentor\Resources\CourseResource\RelationManagers\LessonsRelationManager;
+use App\Models\Course;
+use Filament\Forms;
+use Filament\Actions;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+
+class CourseResource extends Resource
+{
+    protected static ?string $model = Course::class;
+
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static string|\UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static ?string $navigationLabel = 'Kelas Saya';
+    protected static ?string $pluralModelLabel = 'Kelas';
+    protected static ?string $modelLabel = 'Kelas';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Forms\Components\TextInput::make('title')->label('Judul')->required()->maxLength(255),
+                Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(5),
+                Forms\Components\FileUpload::make('thumbnail')->label('Thumbnail')->image()->directory('thumbnails')->disk('public')->visibility('public'),
+                Forms\Components\TextInput::make('price')->label('Harga')->numeric()->required()->default(0),
+                Forms\Components\Toggle::make('is_premium')->label('Premium')->default(false),
+                Forms\Components\Select::make('status')->label('Status')->options([
+                    'draft' => 'Draft',
+                    'pending_review' => 'Pending Review',
+                    'published' => 'Published',
+                ])->default('draft'),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('title')->label('Judul')->searchable()->sortable(),
+                Tables\Columns\IconColumn::make('is_premium')->label('Premium')->boolean(),
+                Tables\Columns\BadgeColumn::make('status')->label('Status')->colors([
+                    'warning' => 'pending_review',
+                    'success' => 'published',
+                    'gray' => 'draft',
+                ])->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y')->label('Dibuat'),
+            ])
+            ->filters([])
+            ->recordActions([
+                Actions\EditAction::make(),
+            ])
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id());
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            LessonsRelationManager::class,
+            EnrollmentsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListCourses::route('/'),
+            'create' => CreateCourse::route('/create'),
+            'edit' => EditCourse::route('/{record}/edit'),
+        ];
+    }
+}
+
