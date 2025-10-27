@@ -20,7 +20,8 @@
         // Force light mode regardless of OS or saved preference
         document.documentElement.classList.remove('dark');
     </script>
-    <!-- No Alpine needed; interactions handled with small inline JS in components -->
+    <!-- Alpine.js is required by some pages (e.g., course detail) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -174,6 +175,10 @@
                                     <a href="{{ route('profile') }}" wire:navigate
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         role="menuitem" tabindex="-1">Profil Saya</a>
+
+                                    <a href="{{ route('student.purchases') }}" wire:navigate
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        role="menuitem" tabindex="-1">Riwayat Pembelian</a>
 
                                     <!-- Logout Form -->
                                     <form method="POST" action="{{ route('logout') }}" role="none">

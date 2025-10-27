@@ -27,6 +27,14 @@ class User extends Authenticatable implements FilamentUser
         'role',
         'google_id',
         'google_token',
+        'npm',
+        'semester',
+        'kelas',
+        'program_studi',
+        'fakultas',
+        'universitas',
+        'wa_number',
+        'alamat',
     ];
 
     /**
@@ -49,6 +57,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'semester' => 'integer',
         ];
     }
 

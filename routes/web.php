@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TransactionProofController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Student\StudentPortalController;
 use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Student\PurchaseController;
 use App\Http\Controllers\Auth\GoogleLoginController;
 
 Route::view('/', 'welcome');
@@ -28,7 +29,7 @@ Route::get('/auth/google/redirect', [GoogleLoginController::class, 'redirectToGo
 Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Student-facing routes
-Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::middleware(['auth', 'role:student'])->group(function () {
     // Sidebar pages powered by controllers
     Route::get('/courses', [StudentPortalController::class, 'courses'])->name('student.courses');
     Route::get('/assignments', [StudentPortalController::class, 'assignments'])->name('student.assignments');
@@ -42,10 +43,13 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/lessons/{lesson}/complete', [LessonCompletionController::class, 'store'])->name('lessons.complete');
     Route::post('/assignments/{assignment}/submit', [AssignmentSubmissionController::class, 'store'])->name('assignments.submit');
 
-    // Checkout flow (manual QRIS)
-    Route::get('/checkout/course/{course}', [CheckoutController::class, 'show'])->name('checkout.course');
-    Route::post('/checkout/course/{course}/confirm', [CheckoutController::class, 'confirm'])->name('checkout.course.confirm');
-    Route::get('/payment/waiting', [CheckoutController::class, 'waiting'])->name('student.payment.waiting');
+        // Checkout flow (manual QRIS)
+        Route::get('/checkout/course/{course}', [CheckoutController::class, 'show'])->name('checkout.course');
+        Route::post('/checkout/course/{course}/confirm', [CheckoutController::class, 'confirm'])->name('checkout.course.confirm');
+        Route::get('/payment/waiting', [CheckoutController::class, 'waiting'])->name('student.payment.waiting');
+
+        // Purchase history for students
+        Route::get('/purchases', [PurchaseController::class, 'index'])->name('student.purchases');
 
     // Certificates
     Route::get('/certificate/{course}', [CertificateController::class, 'download'])->name('certificate.download');
@@ -55,4 +59,3 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::get('/admin/transactions/{transaction}/proof', [TransactionProofController::class, 'show'])
     ->middleware(['auth'])
     ->name('admin.transactions.proof');
-

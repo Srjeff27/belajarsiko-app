@@ -10,14 +10,31 @@ new class extends Component
 {
     public string $name = '';
     public string $email = '';
+    public string $npm = '';
+    public string $semester = '';
+    public string $kelas = '';
+    public string $program_studi = '';
+    public string $fakultas = '';
+    public string $universitas = '';
+    public string $wa_number = '';
+    public string $alamat = '';
 
     /**
      * Mount the component.
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        $user = Auth::user();
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->npm = (string) ($user->npm ?? '');
+        $this->semester = (string) ($user->semester ?? '');
+        $this->kelas = (string) ($user->kelas ?? '');
+        $this->program_studi = (string) ($user->program_studi ?? '');
+        $this->fakultas = (string) ($user->fakultas ?? '');
+        $this->universitas = (string) ($user->universitas ?? '');
+        $this->wa_number = (string) ($user->wa_number ?? '');
+        $this->alamat = (string) ($user->alamat ?? '');
     }
 
     /**
@@ -30,7 +47,27 @@ new class extends Component
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+            'npm' => ['nullable', 'string', 'max:50'],
+            'semester' => ['nullable', 'integer', 'min:1', 'max:20'],
+            'kelas' => ['nullable', 'string', 'max:50'],
+            'program_studi' => ['nullable', 'string', 'max:100'],
+            'fakultas' => ['nullable', 'string', 'max:100'],
+            'universitas' => ['nullable', 'string', 'max:150'],
+            'wa_number' => ['nullable', 'string', 'max:25'],
+            'alamat' => ['nullable', 'string', 'max:500'],
         ]);
+
+        // Normalize optional fields
+        foreach (['npm','kelas','program_studi','fakultas','universitas','wa_number','alamat'] as $k) {
+            if (array_key_exists($k, $validated)) {
+                $validated[$k] = $validated[$k] === '' ? null : $validated[$k];
+            }
+        }
+        if (array_key_exists('semester', $validated)) {
+            $validated['semester'] = ($validated['semester'] === '' || $validated['semester'] === null)
+                ? null
+                : (int) $validated['semester'];
+        }
 
         $user->fill($validated);
 
@@ -123,6 +160,50 @@ new class extends Component
                     @endif
                 </div>
             @endif
+        </div>
+
+        {{-- Additional Student Fields --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="npm" class="sr-only">NPM</label>
+                <x-text-input wire:model="npm" id="npm" name="npm" type="text" class="block w-full" placeholder="NPM" />
+                <x-input-error class="mt-2" :messages="$errors->get('npm')" />
+            </div>
+            <div>
+                <label for="semester" class="sr-only">Semester</label>
+                <x-text-input wire:model="semester" id="semester" name="semester" type="number" min="1" class="block w-full" placeholder="Semester" />
+                <x-input-error class="mt-2" :messages="$errors->get('semester')" />
+            </div>
+            <div>
+                <label for="kelas" class="sr-only">Kelas</label>
+                <x-text-input wire:model="kelas" id="kelas" name="kelas" type="text" class="block w-full" placeholder="Kelas" />
+                <x-input-error class="mt-2" :messages="$errors->get('kelas')" />
+            </div>
+            <div>
+                <label for="program_studi" class="sr-only">Program Studi</label>
+                <x-text-input wire:model="program_studi" id="program_studi" name="program_studi" type="text" class="block w-full" placeholder="Program Studi" />
+                <x-input-error class="mt-2" :messages="$errors->get('program_studi')" />
+            </div>
+            <div>
+                <label for="fakultas" class="sr-only">Fakultas</label>
+                <x-text-input wire:model="fakultas" id="fakultas" name="fakultas" type="text" class="block w-full" placeholder="Fakultas" />
+                <x-input-error class="mt-2" :messages="$errors->get('fakultas')" />
+            </div>
+            <div>
+                <label for="universitas" class="sr-only">Universitas</label>
+                <x-text-input wire:model="universitas" id="universitas" name="universitas" type="text" class="block w-full" placeholder="Universitas" />
+                <x-input-error class="mt-2" :messages="$errors->get('universitas')" />
+            </div>
+            <div>
+                <label for="wa_number" class="sr-only">Nomor WA</label>
+                <x-text-input wire:model="wa_number" id="wa_number" name="wa_number" type="text" class="block w-full" placeholder="Nomor WA" />
+                <x-input-error class="mt-2" :messages="$errors->get('wa_number')" />
+            </div>
+            <div class="md:col-span-2">
+                <label for="alamat" class="sr-only">Alamat</label>
+                <textarea wire:model="alamat" id="alamat" name="alamat" rows="3" class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Alamat"></textarea>
+                <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
+            </div>
         </div>
 
         {{-- Save Button & Action Message --}}
