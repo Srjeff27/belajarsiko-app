@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Course extends Model
 {
@@ -12,6 +13,11 @@ class Course extends Model
 
     protected $fillable = [
         'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id',
+    ];
+
+    protected $appends = [
+        'thumbnail_url',
+        'mentor_name',
     ];
 
     public function lessons()
@@ -37,5 +43,24 @@ class Course extends Model
     public function certificates()
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    // Accessors
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        if (! $this->thumbnail) {
+            return null;
+        }
+
+        if (str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
+        }
+
+        return Storage::disk('public')->url($this->thumbnail);
+    }
+
+    public function getMentorNameAttribute(): ?string
+    {
+        return $this->owner?->name;
     }
 }

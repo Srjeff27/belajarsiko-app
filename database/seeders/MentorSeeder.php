@@ -16,10 +16,28 @@ class MentorSeeder extends Seeder
     {
         $role = Role::firstOrCreate(['name' => 'mentor']);
 
-        User::create([
-            'name' => 'Mentor',
-            'email' => 'mentor@gmail.com',
-            'password' => bcrypt('password'),
-        ])->assignRole($role);
+        $mentors = [
+            [
+                'name' => 'Mentor Satu',
+                'email' => 'mentor1@gmail.com',
+            ],
+            [
+                'name' => 'Mentor Dua',
+                'email' => 'mentor2@gmail.com',
+            ],
+        ];
+
+        foreach ($mentors as $data) {
+            $user = User::firstOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name' => $data['name'],
+                    'password' => bcrypt('password'),
+                    'role' => 'mentor',
+                ]
+            );
+
+            $user->assignRole($role);
+        }
     }
 }

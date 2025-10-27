@@ -8,4 +8,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
+
+    protected function afterCreate(): void
+    {
+        // Sync Spatie role with selected role attribute so panel access works
+        if ($role = $this->record->role ?? null) {
+            $this->record->syncRoles([$role]);
+        }
+    }
 }

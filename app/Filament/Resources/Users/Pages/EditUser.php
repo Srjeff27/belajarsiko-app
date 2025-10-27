@@ -16,4 +16,12 @@ class EditUser extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        // Keep Spatie roles in sync with the selected role column
+        if ($role = $this->record->role ?? null) {
+            $this->record->syncRoles([$role]);
+        }
+    }
 }
