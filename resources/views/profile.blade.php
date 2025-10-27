@@ -11,7 +11,7 @@
                 <div class="max-w-xl">
                     {{-- Judul Section (Opsional, bisa ditambahkan di dalam komponen Livewire) --}}
                     {{-- <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Informasi Profil</h3> --}}
-                    <livewire:profile.update-profile-information-form />
+                    <livewire:profile.update-profile-form />
                 </div>
             </div>
 

@@ -18,6 +18,7 @@ new class extends Component
     public string $universitas = '';
     public string $wa_number = '';
     public string $alamat = '';
+    public $status = null;
 
     /**
      * Mount the component.
@@ -42,42 +43,48 @@ new class extends Component
      */
     public function updateProfileInformation(): void
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'npm' => ['nullable', 'string', 'max:50'],
-            'semester' => ['nullable', 'integer', 'min:1', 'max:20'],
-            'kelas' => ['nullable', 'string', 'max:50'],
-            'program_studi' => ['nullable', 'string', 'max:100'],
-            'fakultas' => ['nullable', 'string', 'max:100'],
-            'universitas' => ['nullable', 'string', 'max:150'],
-            'wa_number' => ['nullable', 'string', 'max:25'],
-            'alamat' => ['nullable', 'string', 'max:500'],
-        ]);
+            $validated = $this->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+                'npm' => ['nullable', 'string', 'max:50'],
+                'semester' => ['nullable', 'integer', 'min:1', 'max:20'],
+                'kelas' => ['nullable', 'string', 'max:50'],
+                'program_studi' => ['nullable', 'string', 'max:100'],
+                'fakultas' => ['nullable', 'string', 'max:100'],
+                'universitas' => ['nullable', 'string', 'max:150'],
+                'wa_number' => ['nullable', 'string', 'max:25'],
+                'alamat' => ['nullable', 'string', 'max:500'],
+            ]);
 
-        // Normalize optional fields
-        foreach (['npm','kelas','program_studi','fakultas','universitas','wa_number','alamat'] as $k) {
-            if (array_key_exists($k, $validated)) {
-                $validated[$k] = $validated[$k] === '' ? null : $validated[$k];
+            // Normalize optional fields
+            foreach (['npm','kelas','program_studi','fakultas','universitas','wa_number','alamat'] as $k) {
+                if (array_key_exists($k, $validated)) {
+                    $validated[$k] = $validated[$k] === '' ? null : $validated[$k];
+                }
             }
+            if (array_key_exists('semester', $validated)) {
+                $validated['semester'] = ($validated['semester'] === '' || $validated['semester'] === null)
+                    ? null
+                    : (int) $validated['semester'];
+            }
+
+            $user->fill($validated);
+
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+            
+            $this->dispatch('profile-updated', name: $user->name);
+            $this->status = 'profile-updated';
+            
+        } catch (\Exception $e) {
+            $this->addError('save', 'Terjadi kesalahan saat menyimpan profil.');
         }
-        if (array_key_exists('semester', $validated)) {
-            $validated['semester'] = ($validated['semester'] === '' || $validated['semester'] === null)
-                ? null
-                : (int) $validated['semester'];
-        }
-
-        $user->fill($validated);
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        $this->dispatch('profile-updated', name: $user->name);
     }
 
     /**
