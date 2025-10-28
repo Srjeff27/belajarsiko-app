@@ -16,6 +16,7 @@ class CoursesTable
         return $table
             ->columns([
                 TextColumn::make('title')->label('Judul')->searchable()->sortable(),
+                TextColumn::make('category.name')->label('Kategori')->badge()->sortable(),
                 TextColumn::make('price')->money('IDR', true)->label('Harga')->sortable(),
                 IconColumn::make('is_premium')->boolean()->label('Premium'),
                 TextColumn::make('created_at')->dateTime('d M Y')->label('Dibuat'),

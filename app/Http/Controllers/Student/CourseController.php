@@ -19,7 +19,7 @@ class CourseController extends Controller
 
         $course->load(['lessons' => function ($q) {
             $q->orderBy('position');
-        }, 'lessons.assignments.submissions']);
+        }, 'lessons.assignments.submissions', 'category:id,name']);
 
         $isEnrolled = $user->enrollments()->where('course_id', $course->id)->exists();
 
@@ -30,4 +30,3 @@ class CourseController extends Controller
         return view('student.course-show', compact('course', 'isEnrolled', 'completedLessons'));
     }
 }
-

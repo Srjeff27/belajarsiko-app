@@ -12,7 +12,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id',
+        'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id', 'course_category_id',
     ];
 
     protected $appends = [
@@ -28,6 +28,11 @@ class Course extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(CourseCategory::class, 'course_category_id');
     }
 
     public function enrollments()

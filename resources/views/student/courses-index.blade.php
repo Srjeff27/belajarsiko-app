@@ -9,10 +9,39 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-0 text-gray-900 dark:text-gray-100">
 
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2 px-4 sm:px-0"> {{-- Ubah padding --}}
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 px-4 sm:px-0"> {{-- Ubah padding --}}
                     <x-heroicon-o-squares-2x2 class="w-7 h-7 text-indigo-500"/>
                     Semua Kelas Tersedia
                 </h3>
+
+                {{-- Filter Kategori --}}
+                @isset($categories)
+                <div class="px-4 sm:px-0 mb-6">
+                    <div class="flex flex-wrap items-center gap-2">
+                        @php $isAll = empty($activeCategory); @endphp
+                        <a href="{{ route('student.courses') }}"
+                           @class([
+                               'inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border transition',
+                               'bg-indigo-600 text-white border-indigo-600' => $isAll,
+                               'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700' => !$isAll,
+                           ])>
+                            Semua
+                        </a>
+                        @foreach($categories as $cat)
+                            @php $active = isset($activeCategory) && $activeCategory && $activeCategory->id === $cat->id; @endphp
+                            <a href="{{ route('student.courses', ['category' => $cat->slug]) }}"
+                               @class([
+                                   'inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition',
+                                   'bg-indigo-600 text-white border-indigo-600' => $active,
+                                   'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700' => !$active,
+                               ])>
+                                <x-heroicon-s-tag class="w-4 h-4"/>
+                                {{ $cat->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endisset
 
                 @if(isset($courses) && $courses->count())
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-0"> {{-- Ubah padding --}}
@@ -30,6 +59,11 @@
                                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
                                          <a href="{{ route('courses.show', $course) }}" wire:navigate class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200">{{ $course->title }}</a> {{-- Tambah duration --}}
                                     </h3>
+                                    @if($course->category?->name)
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200 text-[10px] font-medium mb-2">
+                                            <x-heroicon-s-tag class="w-3 h-3"/> {{ $course->category->name }}
+                                        </span>
+                                    @endif
                                     {{-- Nama Mentor --}}
                                     @if($course->mentor_name)
                                     <p class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">

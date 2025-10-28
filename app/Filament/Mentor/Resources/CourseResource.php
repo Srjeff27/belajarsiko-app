@@ -31,6 +31,10 @@ class CourseResource extends Resource
     {
         return $schema
             ->components([
+                Forms\Components\Select::make('course_category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('title')->label('Judul')->required()->maxLength(255),
                 Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(5),
                 Forms\Components\FileUpload::make('thumbnail')->label('Thumbnail')->image()->directory('thumbnails')->disk('public')->visibility('public'),
@@ -90,4 +94,3 @@ class CourseResource extends Resource
         ];
     }
 }
-

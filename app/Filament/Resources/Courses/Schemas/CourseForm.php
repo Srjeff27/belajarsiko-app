@@ -7,6 +7,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use App\Models\CourseCategory;
 
 class CourseForm
 {
@@ -14,6 +16,11 @@ class CourseForm
     {
         return $schema
             ->components([
+                Select::make('course_category_id')
+                    ->label('Kategori')
+                    ->options(fn () => CourseCategory::query()->orderBy('name')->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
                 TextInput::make('title')
                     ->label('Judul')
                     ->required()

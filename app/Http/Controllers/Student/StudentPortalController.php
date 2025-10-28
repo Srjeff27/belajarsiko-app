@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Certificate;
 use App\Models\Course;
+use App\Models\CourseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // <-- Tambahkan ini
 
@@ -21,19 +22,38 @@ class StudentPortalController extends Controller
     {
         $user = Auth::user(); // <-- Gunakan Auth facade lebih umum
 
-        // [UBAH] Ambil ID kursus yang sudah di-enroll user (lebih efisien)
+        // Ambil ID kursus yang sudah di-enroll user (lebih efisien)
         $enrolledCourseIds = $user->enrollments()->pluck('course_id');
 
-        // [UBAH] Ambil courses, tambahkan relasi mentor jika 'owner' adalah mentor, tambahkan pagination
-        $courses = Course::with(['owner' => function($query){ // Asumsi 'owner' adalah relasi ke mentor/guru
-                              $query->select('id', 'name'); // Hanya ambil ID dan nama mentor
-                           }])
-                           ->withCount(['lessons'])
-                           ->orderBy('title')
-                           ->paginate(12); // <-- Gunakan pagination
+        // Siapkan daftar kategori untuk filter
+        $categories = CourseCategory::query()
+            ->orderBy('name')
+            ->get(['id','name','slug']);
 
-        // [UBAH] Kirimkan $enrolledCourseIds juga ke view
-        return view('student.courses-index', compact('courses', 'enrolledCourseIds'));
+        // Tentukan kategori aktif dari query string (dukungan slug atau category_id)
+        $activeCategory = null;
+        if ($slug = $request->query('category')) {
+            $activeCategory = $categories->firstWhere('slug', $slug);
+        } elseif ($request->filled('category_id')) {
+            $activeCategory = $categories->firstWhere('id', (int) $request->query('category_id'));
+        }
+
+        // Ambil courses + relasi, terapkan filter kategori jika ada
+        $query = Course::with([
+                'owner' => function ($query) { $query->select('id', 'name'); },
+                'category:id,name,slug',
+            ])
+            ->withCount(['lessons'])
+            ->orderBy('title');
+
+        if ($activeCategory) {
+            $query->where('course_category_id', $activeCategory->id);
+        }
+
+        $courses = $query->paginate(12)->withQueryString();
+
+        // Kirimkan variabel ke view
+        return view('student.courses-index', compact('courses', 'enrolledCourseIds', 'categories', 'activeCategory'));
     }
 
     public function assignments(Request $request)
