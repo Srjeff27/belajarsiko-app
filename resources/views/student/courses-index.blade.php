@@ -80,7 +80,7 @@
                                                 <button type="submit"
                                                         class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-300">
                                                     <x-heroicon-o-plus-circle class="w-5 h-5 mr-2 -ml-1"/>
-                                                    Enroll Gratis
+                                                    Ambil Gratis
                                                 </button>
                                             </form>
                                         @endif

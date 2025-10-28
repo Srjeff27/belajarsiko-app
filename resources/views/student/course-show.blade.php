@@ -29,13 +29,26 @@
                             <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
                                 <h4 class="font-semibold mb-2 text-gray-900 dark:text-white">Daftar Kelas Ini</h4>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Dapatkan akses penuh ke semua materi dan tugas.</p>
-                                <a href="{{ route('checkout.course', $course) }}" 
-                                   class="inline-flex items-center justify-center w-full px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-300">
-                                    <svg class="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                    </svg>
-                                    Beli Kelas (Rp {{ number_format($course->price, 0, ',', '.') }})
-                                </a>
+                                @if($course->is_premium)
+                                    <a href="{{ route('checkout.course', $course) }}" 
+                                       class="inline-flex items-center justify-center w-full px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-300">
+                                        <svg class="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                        </svg>
+                                        Beli Kelas (Rp {{ number_format($course->price, 0, ',', '.') }})
+                                    </a>
+                                @else
+                                    <form method="POST" action="{{ route('courses.enroll', $course) }}">
+                                        @csrf
+                                        <button type="submit"
+                                           class="inline-flex items-center justify-center w-full px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-300">
+                                            <svg class="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                            Ambil Kelas
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                             @endif
                         </div>
