@@ -60,9 +60,9 @@ class GoogleLoginController extends Controller
         Auth::login($user);
 
         return redirect()->intended('/dashboard')->with('flash', [
-            'type' => 'success',
-            'title' => 'Oh Yeah!',
-            'message' => 'Anda berhasil masuk dengan Google.',
+            'type'    => 'success',
+            'title'   => 'Berhasil Masuk!', // Jelas, ringkas, dan profesional
+            'message' => 'Anda telah berhasil masuk menggunakan akun Google Anda.', // Lebih formal dan baku
         ]);
     }
 }
