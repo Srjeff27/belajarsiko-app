@@ -11,7 +11,21 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+     @php
+    $isProduction = app()->environment('production');
+    $manifestPath = $isProduction ? '../public_html/build/manifest.json' : public_path('build/manifest.json');
+ @endphp
+ 
+  @if ($isProduction && file_exists($manifestPath))
+   @php
+    $manifest = json_decode(file_get_contents($manifestPath), true);
+   @endphp
+    <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
+    <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+  @else
+    @viteReactRefresh
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
+  @endif
 
     <style>
         .gradient-bg {
@@ -356,7 +370,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="#"
+                    <a href="/courses"
                         class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-300">
                         Lihat Semua Kursus
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20"
@@ -507,148 +521,38 @@
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-100">Tautan Cepat</h3>
                     <ul class="space-y-3">
-                        <li><a href="#beranda"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                </svg>
-                                Beranda
-                            </a></li>
-                        <li><a href="#fitur"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.998 15.998 0 011.622-3.388m0 0c.058 1.17.22 2.3.464 3.388m-1.622-3.388a15.998 15.998 0 013.388 1.62m0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.998 15.998 0 011.622-3.388" />
-                                </svg>
-                                Fitur
-                            </a></li>
-                        <li><a href="#kursus"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" />
-                                </svg>
-                                Kursus
-                            </a></li>
-                        <li><a href="#testimoni"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.86 8.25-8.625 8.25S3.75 16.556 3.75 12 7.61 3.75 12.375 3.75 21 7.444 21 12z" />
-                                </svg>
-                                Testimoni
-                            </a></li>
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                                Blog
-                            </a></li>
+                        <li><a href="#beranda" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-home class="w-5 h-5 mr-2"/>Beranda</a></li>
+                        <li><a href="#fitur" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-sparkles class="w-5 h-5 mr-2"/>Fitur</a></li>
+                        <li><a href="#kursus" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-book-open class="w-5 h-5 mr-2"/>Kursus</a></li>
+                        <li><a href="#testimoni" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-chat-bubble-left-ellipsis class="w-5 h-5 mr-2"/>Testimoni</a></li>
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-newspaper class="w-5 h-5 mr-2"/>Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-100">Kategori Kursus</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-code-bracket class="w-5 h-5 mr-2"/>Web Development</a></li>
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-circle-stack class="w-5 h-5 mr-2"/>Data Science</a></li>
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-swatch class="w-5 h-5 mr-2"/>UI/UX Design</a></li>
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-megaphone class="w-5 h-5 mr-2"/>Digital Marketing</a></li>
+                        <li><a href="#" class="flex items-center text-gray-400 hover:text-white transition-colors duration-300"><x-heroicon-o-computer-desktop class="w-5 h-5 mr-2"/>Bahasa Pemrograman</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-100">Kontak Kami</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"> <x-heroicon-o-map-pin class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"/> <span class="text-gray-400">Jl. WR. Supratman, Kandang Limun, Kec. Muara Bangka Hulu, Sumatera, Bengkulu</span> </li>
+                        <li class="flex items-start"> <x-heroicon-o-envelope class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"/> <span class="text-gray-400">belajarsiko@gmail.com</span> </li>
+                        <li class="flex items-start"> <x-heroicon-o-phone class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"/> <span class="text-gray-400">+62 21 1234 5678</span> </li>
                     </ul>
                 </div>
 
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Kategori Kursus</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
-                                </svg>
-                                Web Development
-                            </a></li>
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m1-3l1 3m0 0l.5 1.5m-.5-1.5l-.5 1.5m0 0l.5 1.5m0 0l.5 1.5m7.5-6l-1-3m1 3l1-3m0 0l.5-1.5m-.5 1.5l-.5-1.5m0 0l.5-1.5m0 0l.5-1.5" />
-                                </svg>
-                                Data Science
-                            </a></li>
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .828.201 1.62.568 2.33l3.5 7.017M14.25 3.104c.251.023.501.05.75.082M14.25 3.104a24.301 24.301 0 00-4.5 0m0 0v5.714c0 .828-.201 1.62-.568 2.33l-3.5 7.017M14.25 16.172l-3.5-7.017" />
-                                </svg>
-                                UI/UX Design
-                            </a></li>
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
-                                </svg>
-                                Digital Marketing
-                            </a></li>
-                        <li><a href="#"
-                                class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5 0l-4.5 9" />
-                                </svg>
-                                Bahasa Pemrograman
-                            </a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                            <span class="text-gray-400">Jl. WR. Supratman, Kandang Limun, Kec. Muara Bangka Hulu,
-                                Sumatera, Bengkulu</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                            <span class="text-gray-400">belajarsiko@gmail.com</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 mr-2 text-indigo-400 mt-1 flex-shrink-0" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.822-1.49-5.02-3.688-6.509-6.509l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                            </svg>
-                            <span class="text-gray-400">+62 21 1234 5678</span>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} BelajarSiko. Semua hak cipta dilindungi.</p>
+                <p>&copy; {{ date('Y') }} Belajar Siko. Semua hak cipta dilindungi.</p>
             </div>
         </div>
     </footer>
