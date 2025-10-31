@@ -45,40 +45,71 @@ class AssignmentSubmissionResource extends Resource
                 Tables\Columns\TextColumn::make('submitted_at')->dateTime('d M Y H:i')->label('Dikirim'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('course_id')
-                    ->label('Kelas')
-                    ->options(function () {
-                        return Course::query()
-                            ->where('user_id', auth()->id())
-                            ->orderBy('title')
-                            ->pluck('title', 'id')
-                            ->toArray();
-                    })
+                Tables\Filters\Filter::make('kelas_materi')
+                    ->form([
+                        Forms\Components\Select::make('course_id')
+                            ->label('Kelas')
+                            ->options(function () {
+                                return Course::query()
+                                    ->where('user_id', auth()->id())
+                                    ->orderBy('title')
+                                    ->pluck('title', 'id')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->reactive(),
+
+                        Forms\Components\Select::make('lesson_id')
+                            ->label('Materi')
+                            ->options(function ($get) {
+                                $courseId = $get('course_id');
+                                if (!$courseId) {
+                                    return [];
+                                }
+                                return Lesson::query()
+                                    ->where('course_id', $courseId)
+                                    ->orderBy('title')
+                                    ->pluck('title', 'id')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->disabled(fn ($get) => ! $get('course_id'))
+                            ->reactive(),
+                    ])
                     ->query(function (Builder $query, array $data) {
-                        if (empty($data['value'])) {
-                            return;
+                        $courseId = $data['course_id'] ?? null;
+                        $lessonId = $data['lesson_id'] ?? null;
+
+                        if ($courseId) {
+                            $query->whereHas('assignment.lesson.course', function ($q) use ($courseId) {
+                                $q->where('id', $courseId);
+                            });
                         }
-                        $query->whereHas('assignment.lesson.course', function ($q) use ($data) {
-                            $q->where('id', $data['value']);
-                        });
+
+                        if ($lessonId) {
+                            $query->whereHas('assignment.lesson', function ($q) use ($lessonId) {
+                                $q->where('id', $lessonId);
+                            });
+                        }
                     }),
 
-                Tables\Filters\SelectFilter::make('lesson_id')
-                    ->label('Materi')
-                    ->options(function () {
-                        return Lesson::query()
-                            ->whereHas('course', fn ($q) => $q->where('user_id', auth()->id()))
-                            ->orderBy('title')
-                            ->pluck('title', 'id')
-                            ->toArray();
-                    })
+                Tables\Filters\SelectFilter::make('grading_status')
+                    ->label('Status Nilai')
+                    ->options([
+                        'graded' => 'Sudah dinilai',
+                        'ungraded' => 'Belum dinilai',
+                    ])
                     ->query(function (Builder $query, array $data) {
                         if (empty($data['value'])) {
                             return;
                         }
-                        $query->whereHas('assignment.lesson', function ($q) use ($data) {
-                            $q->where('id', $data['value']);
-                        });
+                        if ($data['value'] === 'graded') {
+                            $query->whereNotNull('grade');
+                        } elseif ($data['value'] === 'ungraded') {
+                            $query->whereNull('grade');
+                        }
                     }),
             ])
             ->recordActions([
