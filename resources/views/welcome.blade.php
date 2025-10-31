@@ -87,13 +87,14 @@
         class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 transition-shadow">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
-                <a href="/" class="flex items-center space-x-2" wire:navigate> {{-- Tambah wire:navigate --}}
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md">
-                        {{-- [Ubah] Ganti SVG dengan Heroicon --}}
-                        <x-heroicon-s-academic-cap class="w-6 h-6 text-white" />
+                <a href="/" class="flex items-center space-x-1" wire:navigate>
+                    <div class="w-10 h-10 flex items-center justify-center relative bottom-[3px]">
+                        <img src="{{ asset('images/logo-sbu.svg') }}" alt="BelajarSiko Logo"
+                            class="w-9 h-9 object-contain" />
                     </div>
-                    <span class="text-xl font-bold text-gray-900">BelajarSiko</span> {{-- [Ubah] spasi --}}
+                    <span class="text-xl font-bold text-[#4F47E6] leading-none">BelajarSiko</span>
                 </a>
+
 
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#beranda" class="text-gray-600 hover:text-indigo-600 font-medium">Beranda</a>
@@ -164,8 +165,6 @@
                     <div class="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
                         <div
                             class="inline-flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm mb-4 ring-1 ring-white/20 glass">
-                            {{-- Tambah class 'glass' --}}
-                            {{-- [Ubah] Ganti SVG dengan Heroicon --}}
                             <x-heroicon-s-sparkles class="w-4 h-4 text-yellow-300" />
                             <span>Akses materi premium + komunitas kampus</span>
                         </div>
@@ -267,7 +266,7 @@
                             <x-heroicon-o-arrow-trending-up class="h-6 w-6 text-indigo-600" />
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Konten Terupdate</h3>
-                        <p class="text-gray-600">Materi mengikuti tren industri — anti ketinggalan zaman.</p>
+                        <p class="text-gray-600">Materi mengikuti tren industri, anti ketinggalan zaman.</p>
                     </div>
                     <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
@@ -275,7 +274,7 @@
                             {{-- Ganti ikon --}}
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Komunitas Belajar</h3>
-                        <p class="text-gray-600">Belajar bareng teman kampus — lebih semangat & konsisten.</p>
+                        <p class="text-gray-600">Belajar bareng teman kampus, lebih semangat & konsisten.</p>
                     </div>
                 </div>
             </div>
@@ -458,42 +457,45 @@
                 <!-- Brand + Social -->
                 <div class="lg:col-span-4">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 14.25L3.75 9.75 12 5.25l8.25 4.5-8.25 4.5z" />
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6.75 10.5v3.75A8.25 8.25 0 0012 21a8.25 8.25 0 005.25-6.75V10.5" />
-                            </svg>
+                        <div class="w-15 h-15 flex items-center justify-center relative bottom-[5px]">
+                            <img src="{{ asset('images/logo-sb.svg') }}" alt="BelajarSiko Logo"
+                                class="w-12 h-12 object-contain" />
                         </div>
                         <span class="text-xl font-bold">BelajarSiko</span>
                     </div>
+
                     <p class="text-gray-400 mb-5 max-w-sm">Platform belajar online untuk mengembangkan keterampilan dan
                         karier Anda.</p>
                     <div class="flex items-center gap-4">
-                        <a href="#"
-                            class="text-gray-400 hover:text-white transition-transform duration-200 hover:scale-110"
-                            aria-label="Twitter">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <!-- Twitter -->
+                        <a href="#" aria-label="Twitter"
+                            class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                viewBox="0 0 24 24">
                                 <path
-                                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                                    d="M19.633 7.997c.013.176.013.353.013.53 0 5.397-4.11 11.625-11.625 11.625-2.31 0-4.457-.675-6.267-1.845.324.038.636.05.972.05a8.21 8.21 0 0 0 5.094-1.755A4.107 4.107 0 0 1 4.23 13.9a5.19 5.19 0 0 0 .776.063c.36 0 .72-.05 1.058-.138a4.1 4.1 0 0 1-3.29-4.025v-.05a4.14 4.14 0 0 0 1.86.519 4.103 4.103 0 0 1-1.27-5.48 11.65 11.65 0 0 0 8.457 4.287 4.629 4.629 0 0 1-.1-.94A4.1 4.1 0 0 1 16.44 3a8.07 8.07 0 0 0 2.603-.996 4.1 4.1 0 0 1-1.803 2.27 8.19 8.19 0 0 0 2.36-.638 8.8 8.8 0 0 1-2.067 2.36z" />
                             </svg>
                         </a>
-                        <a href="#"
-                            class="text-gray-400 hover:text-white transition-transform duration-200 hover:scale-110"
-                            aria-label="Instagram">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+
+                        <!-- Instagram -->
+                        <a href="#" aria-label="Instagram"
+                            class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                viewBox="0 0 24 24">
                                 <path
-                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z" />
+                                    d="M12 2.2c3.2 0 3.6.01 4.9.07 3.25.15 4.77 1.69 4.92 4.92.06 1.26.07 1.64.07 4.9s-.01 3.64-.07 4.9c-.15 3.23-1.67 4.77-4.92 4.92-1.26.06-1.64.07-4.9.07s-3.64-.01-4.9-.07c-3.23-.15-4.77-1.67-4.92-4.92C2.21 15.64 2.2 15.26 2.2 12s.01-3.64.07-4.9C2.42 3.87 3.96 2.33 7.2 2.18 8.46 2.12 8.84 2.1 12 2.1zM12 0C8.74 0 8.33.01 7.05.07 2.67.26.26 2.68.07 7.06.01 8.34 0 8.75 0 12s.01 3.66.07 4.94c.19 4.38 2.61 6.8 6.99 6.99C8.34 23.99 8.75 24 12 24s3.66-.01 4.94-.07c4.38-.19 6.8-2.61 6.99-6.99.06-1.28.07-1.69.07-4.94s-.01-3.66-.07-4.94C23.73 2.68 21.31.26 16.93.07 15.65.01 15.26 0 12 0z" />
+                                <path
+                                    d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zM18.4 4.59a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44z" />
                             </svg>
                         </a>
-                        <a href="#"
-                            class="text-gray-400 hover:text-white transition-transform duration-200 hover:scale-110"
-                            aria-label="LinkedIn">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+
+                        <!-- LinkedIn -->
+                        <a href="#" aria-label="LinkedIn"
+                            class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                viewBox="0 0 24 24">
                                 <path
-                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                    d="M20.45 20.45h-3.6v-5.3c0-1.26-.02-2.87-1.75-2.87-1.76 0-2.03 1.37-2.03 2.77v5.4h-3.6v-10.9h3.46v1.49h.05a3.8 3.8 0 0 1 3.43-1.88c3.67 0 4.35 2.42 4.35 5.56v5.73zM5.34 8.06a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.15 20.45H3.5v-10.9h3.65v10.9zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.21 0 22.23 0z" />
                             </svg>
                         </a>
                     </div>
@@ -573,31 +575,39 @@
 
                 <!-- Contact -->
                 <div class="lg:col-span-2">
-                    <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
-                    <ul class="space-y-3 text-gray-300">
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="w-5 h-5 mt-0.5 text-indigo-400 flex-shrink-0" viewBox="0 0 24 24"
-                                fill="currentColor">
+                    <h3 class="text-lg font-semibold mb-4 text-white">Kontak Kami</h3>
+                    <ul class="space-y-3 text-white">
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-white flex-shrink-0"
+                                viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M12 2.25c-4.97 0-9 3.6-9 8.04 0 5.73 7.56 10.86 8.27 11.34l.73.47.73-.47c.71-.48 8.27-5.61 8.27-11.34 0-4.44-4.03-8.04-9-8.04z" />
-                            </svg><span>Jl. WR. Supratman, Kandang Limun, Kec. Muara Bangka Hulu, Sumatera,
-                                Bengkulu</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="w-5 h-5 mt-0.5 text-indigo-400 flex-shrink-0" viewBox="0 0 24 24"
-                                fill="currentColor">
+                            </svg>
+                            <span>Jl. WR. Supratman, Kandang Limun, Kec. Muara Bangka Hulu, Sumatera, Bengkulu</span>
+                        </li>
+
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-white flex-shrink-0"
+                                viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M1.5 6.75A2.25 2.25 0 013.75 4.5h16.5A2.25 2.25 0 0122.5 6.75V8.1L12 13.5 1.5 8.1V6.75z" />
                                 <path
                                     d="M1.5 9.75l7.935 3.967a4.5 4.5 0 003.13 0L20.5 9.75V17.25A2.25 2.25 0 0118.25 19.5H3.75A2.25 2.25 0 011.5 17.25V9.75z" />
-                            </svg><span>belajarsiko@gmail.com</span></li>
-                        <li class="flex items-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="w-5 h-5 mt-0.5 text-indigo-400 flex-shrink-0" viewBox="0 0 24 24"
-                                fill="currentColor">
+                            </svg>
+                            <span>belajarsiko@gmail.com</span>
+                        </li>
+
+                        <li class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-white flex-shrink-0"
+                                viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25A2.25 2.25 0 0021.75 19.5v-1.372a1.125 1.125 0 00-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.173.417l-.97 1.293A13.5 13.5 0 016.963 10.5l1.293-.97c.363-.271.527-.734.417-1.173L7.6 3.102A1.125 1.125 0 006.509 2.25H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                            </svg><span>+62 21 1234 5678</span></li>
+                            </svg>
+                            <span>+62 823 7441 1745</span>
+                        </li>
                     </ul>
                 </div>
+
             </div>
 
 
