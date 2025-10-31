@@ -29,7 +29,26 @@ class StudentsTable
                 TextColumn::make('universitas')->label('Universitas')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('wa_number')->label('Nomor WA')->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                \Filament\Tables\Filters\SelectFilter::make('course_id')
+                    ->label('Filter Kelas')
+                    ->options(function () {
+                        // Jika mentor, tampilkan hanya kelas miliknya; jika admin, semua kelas
+                        $query = \App\Models\Course::query();
+                        if (auth()->user() && auth()->user()->hasRole('mentor')) {
+                            $query->where('user_id', auth()->id());
+                        }
+                        return $query->orderBy('title')->pluck('title', 'id')->toArray();
+                    })
+                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data) {
+                        if (empty($data['value'])) {
+                            return;
+                        }
+                        $query->whereHas('enrollments', function ($q) use ($data) {
+                            $q->where('course_id', $data['value']);
+                        });
+                    }),
+            ])
             ->recordActions([
                 Action::make('export_csv')
                     ->label('Cetak (CSV)')
@@ -160,4 +179,3 @@ class StudentsTable
             ]);
     }
 }
-
