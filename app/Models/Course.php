@@ -13,6 +13,7 @@ class Course extends Model
 
     protected $fillable = [
         'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id', 'course_category_id',
+        'mentor_signature_name', 'mentor_signature',
     ];
 
     protected $appends = [

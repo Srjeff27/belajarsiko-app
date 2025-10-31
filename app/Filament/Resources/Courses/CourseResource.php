@@ -20,7 +20,7 @@ class CourseResource extends Resource
     protected static ?string $model = Course::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|UnitEnum|null $navigationGroup = 'Kelas';
 
     protected static ?string $navigationLabel = 'Kelas';
     protected static ?string $pluralModelLabel = 'Kelas';

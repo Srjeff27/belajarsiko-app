@@ -11,7 +11,7 @@ class Certificate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'course_id', 'generated_at', 'unique_code',
+        'user_id', 'course_id', 'generated_at', 'unique_code', 'google_drive_link',
     ];
 
     protected $casts = [
@@ -28,4 +28,3 @@ class Certificate extends Model
         return $this->belongsTo(Course::class);
     }
 }
-

@@ -89,6 +89,8 @@
                                         </div>
                                     @endif
 
+                                    
+
                                 @empty
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada materi ditambahkan.</p>
                                 @endforelse
@@ -119,7 +121,8 @@
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $lesson->title }}</h3>
                                         </div>
 
-                                        @if($isEnrolled)
+                                        @php $canDiscuss = $isEnrolled || (auth()->check() && ($course->user_id === auth()->id() || auth()->user()->hasRole('admin'))); @endphp
+                                        @if($canDiscuss)
                                             @php $isCompleted = $completedLessons->contains($lesson->id); @endphp
                                             <form method="POST" action="{{ route('lessons.complete', $lesson) }}">
                                                 @csrf
@@ -202,6 +205,163 @@
                                             </div>
                                         </div>
                                     @endif
+
+                                    {{-- Discussion Section (placed after tasks, YouTube-like) --}}
+                                    <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                                        <h4 class="text-md font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+                                            <x-heroicon-o-chat-bubble-left-right class="w-6 h-6 text-indigo-500"/>
+                                            Diskusi Materi
+                                        </h4>
+
+                                        {{-- Input ala YouTube --}}
+                                        @if($isEnrolled)
+                                            <div class="flex items-start gap-3 mb-4">
+                                                <span class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+                                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                                </span>
+                                                <form method="POST" action="{{ route('lessons.discussions.store', $lesson) }}" class="flex-1">
+                                                    @csrf
+                                                    <textarea name="content" rows="2" class="w-full border-0 border-b border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-0 resize-none" placeholder="Tulis komentar publik..." required></textarea>
+                                                    <div class="flex items-center gap-3 mt-2">
+                                                        <x-text-input name="google_drive_link" type="url" class="grow" placeholder="Link Google Drive (opsional)" />
+                                                        <x-primary-button class="shrink-0">Kirim</x-primary-button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        @endif
+
+                                        {{-- Kontrol urutan komentar --}}
+                                        @php $commentSort = request('csort', 'new'); @endphp
+                                        <div class="flex items-center justify-end gap-3 mb-3 text-sm">
+                                            <span class="text-gray-500">Urutkan:</span>
+                                            <a href="{{ request()->fullUrlWithQuery(['csort' => 'new']) }}" class="hover:underline {{ $commentSort==='new' ? 'text-indigo-600 font-medium' : 'text-gray-600' }}">Terbaru</a>
+                                            <span class="text-gray-400">|</span>
+                                            <a href="{{ request()->fullUrlWithQuery(['csort' => 'top']) }}" class="hover:underline {{ $commentSort==='top' ? 'text-indigo-600 font-medium' : 'text-gray-600' }}">Teratas</a>
+                                        </div>
+
+                                        {{-- Daftar komentar/topik --}}
+                                        <div class="space-y-5">
+                                            @forelse($lesson->discussions->sortByDesc('created_at') as $discussion)
+                                                <div class="flex items-start gap-3">
+                                                    <span class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-200 text-gray-700 font-semibold">
+                                                        {{ strtoupper(substr($discussion->user?->name ?? 'U', 0, 1)) }}
+                                                    </span>
+                                                    <div class="flex-1">
+                                                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium text-gray-900 dark:text-gray-200">{{ $discussion->user?->name ?? 'Pengguna' }}</span>
+                                                            <span class="mx-2">•</span>
+                                                            <span>{{ $discussion->created_at->diffForHumans() }}</span>
+                                                        </div>
+                                                        <div class="mt-1 text-gray-900 dark:text-gray-100 whitespace-pre-line">{{ $discussion->content }}</div>
+                                                        @if($discussion->google_drive_link)
+                                                            <div class="mt-1"><a class="text-indigo-600 hover:underline" href="{{ $discussion->google_drive_link }}" target="_blank">Lampiran (Google Drive)</a></div>
+                                                        @endif
+
+                                                        @php
+                                                            $canManageDiscussion = auth()->check() && ($discussion->user_id === auth()->id() || $course->user_id === auth()->id() || auth()->user()->hasRole('admin'));
+                                                        @endphp
+                                                        @if($canManageDiscussion)
+                                                            <div x-data="{ openEdit: false }" class="mt-2 flex items-center gap-3 text-xs">
+                                                                <button type="button" @click="openEdit = !openEdit" class="text-gray-600 hover:underline">Edit</button>
+                                                                <form method="POST" action="{{ route('discussions.destroy', $discussion) }}" onsubmit="return confirm('Hapus diskusi ini?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                                                                </form>
+                                                            </div>
+                                                            <div x-show="openEdit" x-cloak class="mt-2">
+                                                                <form method="POST" action="{{ route('discussions.update', $discussion) }}" class="space-y-2">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <textarea name="content" rows="3" class="w-full rounded-md border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-indigo-500" required>{{ $discussion->content }}</textarea>
+                                                                    <x-text-input name="google_drive_link" type="url" class="w-full" placeholder="Link Google Drive (opsional)" :value="$discussion->google_drive_link" />
+                                                                    <x-primary-button type="submit">Simpan</x-primary-button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+
+                                                        {{-- Balasan --}}
+                                                        <div class="mt-3 space-y-3">
+                                                            @php 
+                                                                $comments = $discussion->comments;
+                                                                if($commentSort === 'top') { $comments = $comments->sortByDesc('likes_count'); }
+                                                                else { $comments = $comments->sortByDesc('created_at'); }
+                                                            @endphp
+                                                            @foreach($comments as $comment)
+                                                                <div class="flex items-start gap-3">
+                                                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-gray-700 font-semibold">
+                                                                        {{ strtoupper(substr($comment->user?->name ?? 'U', 0, 1)) }}
+                                                                    </span>
+                                                                    <div class="flex-1 text-sm">
+                                                                        <div class="text-gray-600 dark:text-gray-400">
+                                                                            <span class="font-medium text-gray-900 dark:text-gray-200">{{ $comment->user?->name ?? 'Pengguna' }}</span>
+                                                                            <span class="mx-2">•</span>
+                                                                            <span>{{ $comment->created_at->diffForHumans() }}</span>
+                                                                        </div>
+                                                                        <div class="mt-1 text-gray-900 dark:text-gray-100 whitespace-pre-line">{{ $comment->content }}</div>
+                                                                        @if($comment->google_drive_link)
+                                                                            <div class="mt-1"><a class="text-indigo-600 hover:underline" href="{{ $comment->google_drive_link }}" target="_blank">Lampiran (Google Drive)</a></div>
+                                                                        @endif
+
+                                                                        <div class="mt-2 flex items-center gap-3">
+                                                                            <form method="POST" action="{{ route('comments.like', $comment) }}">
+                                                                                @csrf
+                                                                                <button type="submit" class="inline-flex items-center gap-1 text-xs text-gray-600 hover:text-indigo-600">
+                                                                                    <x-heroicon-o-hand-thumb-up class="w-4 h-4"/>
+                                                                                    <span>{{ $comment->likes_count }}</span>
+                                                                                </button>
+                                                                            </form>
+
+                                                                            @php
+                                                                                $canManageComment = auth()->check() && ($comment->user_id === auth()->id() || $course->user_id === auth()->id() || auth()->user()->hasRole('admin'));
+                                                                            @endphp
+                                                                            @if($canManageComment)
+                                                                                <div x-data="{ editOpen: false }" class="inline-flex items-center gap-2">
+                                                                                    <button type="button" @click="editOpen = !editOpen" class="text-xs text-gray-600 hover:underline">Edit</button>
+                                                                                    <form method="POST" action="{{ route('comments.destroy', $comment) }}" onsubmit="return confirm('Hapus komentar ini?')">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                        <button type="submit" class="text-xs text-red-600 hover:underline">Hapus</button>
+                                                                                    </form>
+                                                                                    <div x-show="editOpen" x-cloak class="mt-2 w-full">
+                                                                                        <form method="POST" action="{{ route('comments.update', $comment) }}" class="space-y-2">
+                                                                                            @csrf
+                                                                                            @method('PATCH')
+                                                                                            <textarea name="content" rows="2" class="w-full border-0 border-b border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-0 resize-none" required>{{ $comment->content }}</textarea>
+                                                                                            <x-text-input name="google_drive_link" type="url" class="w-full" placeholder="Link Google Drive (opsional)" :value="$comment->google_drive_link" />
+                                                                                            <x-secondary-button type="submit">Simpan</x-secondary-button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+
+                                                            {{-- Form balasan --}}
+                                                            @if($canDiscuss)
+                                                                <form method="POST" action="{{ route('discussions.comments.store', $discussion) }}" class="flex items-start gap-3">
+                                                                    @csrf
+                                                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 font-semibold">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                                                                    <div class="flex-1">
+                                                                        <textarea name="content" rows="1" class="w-full border-0 border-b border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-0 resize-none" placeholder="Tulis balasan..." required></textarea>
+                                                                        <div class="flex items-center gap-3 mt-2">
+                                                                            <x-text-input name="google_drive_link" type="url" class="grow" placeholder="Link Google Drive (opsional)" />
+                                                                            <x-secondary-button type="submit" class="shrink-0">Balas</x-secondary-button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @empty
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada komentar.</p>
+                                            @endforelse
+                                        </div>
+                                    </div>
+
                                     @else
                                         <div class="p-6 text-center text-gray-700 dark:text-gray-300">
                                             <div class="mb-4">

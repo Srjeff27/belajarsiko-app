@@ -20,7 +20,7 @@ class AssignmentSubmissionResource extends Resource
     protected static ?string $model = AssignmentSubmission::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
-    protected static string|UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|UnitEnum|null $navigationGroup = 'Tugas';
 
     protected static ?string $navigationLabel = 'Pengumpulan Tugas';
     protected static ?string $pluralModelLabel = 'Pengumpulan Tugas';
@@ -52,4 +52,3 @@ class AssignmentSubmissionResource extends Resource
         ];
     }
 }
-

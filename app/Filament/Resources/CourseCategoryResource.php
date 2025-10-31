@@ -17,7 +17,7 @@ class CourseCategoryResource extends Resource
     protected static ?string $model = CourseCategory::class;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
-    protected static string|\UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kelas';
     protected static ?string $navigationLabel = 'Kategori Kelas';
 
     public static function form(Schema $schema): Schema

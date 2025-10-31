@@ -21,7 +21,7 @@ class AssignmentResource extends Resource
     protected static ?string $model = Assignment::class;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
-    protected static string|\UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|\UnitEnum|null $navigationGroup = 'Tugas';
     protected static ?string $navigationLabel = 'Tugas';
     protected static ?string $pluralModelLabel = 'Tugas';
     protected static ?string $modelLabel = 'Tugas';
@@ -81,4 +81,3 @@ class AssignmentResource extends Resource
         ];
     }
 }
-

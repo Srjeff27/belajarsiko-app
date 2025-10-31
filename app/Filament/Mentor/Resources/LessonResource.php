@@ -21,7 +21,7 @@ class LessonResource extends Resource
     protected static ?string $model = Lesson::class;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
-    protected static string|\UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|\UnitEnum|null $navigationGroup = 'Materi';
     protected static ?string $navigationLabel = 'Materi';
     protected static ?string $pluralModelLabel = 'Materi';
     protected static ?string $modelLabel = 'Materi';
@@ -88,4 +88,3 @@ class LessonResource extends Resource
         ];
     }
 }
-

@@ -22,7 +22,7 @@ class CourseResource extends Resource
     protected static ?string $model = Course::class;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|\UnitEnum|null $navigationGroup = 'Pembelajaran';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kelas';
     protected static ?string $navigationLabel = 'Kelas Saya';
     protected static ?string $pluralModelLabel = 'Kelas';
     protected static ?string $modelLabel = 'Kelas';
@@ -45,6 +45,12 @@ class CourseResource extends Resource
                     'pending_review' => 'Pending Review',
                     'published' => 'Published',
                 ])->default('draft'),
+
+                Forms\Components\Section::make('Tanda Tangan Mentor')
+                    ->schema([
+                        Forms\Components\TextInput::make('mentor_signature_name')->label('Nama pada Sertifikat')->placeholder('Kosongkan untuk pakai nama akun mentor'),
+                        Forms\Components\FileUpload::make('mentor_signature')->label('Tanda Tangan (PNG/JPG)')->image()->directory('signatures')->disk('public')->visibility('public'),
+                    ]),
             ]);
     }
 

@@ -17,9 +17,17 @@ class CourseController extends Controller
     {
         $user = auth()->user();
 
-        $course->load(['lessons' => function ($q) {
-            $q->orderBy('position');
-        }, 'lessons.assignments.submissions', 'category:id,name']);
+        $course->load([
+            'lessons' => function ($q) {
+                $q->orderBy('position');
+            },
+            'lessons.assignments.submissions',
+            'lessons.discussions.user:id,name',
+            'lessons.discussions.comments' => function ($q) {
+                $q->with('user:id,name')->withCount('likes');
+            },
+            'category:id,name'
+        ]);
 
         $isEnrolled = $user->enrollments()->where('course_id', $course->id)->exists();
 

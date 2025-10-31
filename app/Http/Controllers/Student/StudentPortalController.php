@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Certificate;
+use App\Models\CertificateRequest;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use Illuminate\Http\Request;
@@ -78,11 +79,30 @@ class StudentPortalController extends Controller
     {
         $user = Auth::user(); // <-- Gunakan Auth facade
         
-        $certificates = Certificate::with('course:id,title') // Load relasi course secukupnya
+        $certificates = Certificate::with('course:id,title,thumbnail') // Load relasi course secukupnya
             ->where('user_id', $user->id)
             ->latest('generated_at')
             ->paginate(10); // <-- Gunakan pagination
 
-        return view('student.certificates-index', compact('certificates'));
+        // Cari kursus yang selesai 100% tetapi belum ada certificate record
+        $enrolledCourseIds = $user->enrollments()->pluck('course_id');
+        $courses = Course::whereIn('id', $enrolledCourseIds)->with('lessons:id,course_id')->get(['id','title','thumbnail']);
+
+        $completedCourseIds = collect();
+        foreach ($courses as $course) {
+            $total = $course->lessons->count();
+            if ($total === 0) continue;
+            $completed = $user->lessonCompletions()->whereIn('lesson_id', $course->lessons->pluck('id'))->count();
+            if ($total > 0 && $completed === $total) {
+                $completedCourseIds->push($course->id);
+            }
+        }
+
+        $alreadyCertifiedIds = Certificate::where('user_id', $user->id)->pluck('course_id');
+        $eligibleCourseIds = $completedCourseIds->diff($alreadyCertifiedIds)->values();
+        $requestedCourseIds = CertificateRequest::where('user_id', $user->id)->pluck('course_id');
+        $eligibleCourses = $courses->whereIn('id', $eligibleCourseIds);
+
+        return view('student.certificates-index', compact('certificates', 'eligibleCourses', 'requestedCourseIds'));
     }
 }
