@@ -33,6 +33,24 @@
                                     <h4 class="font-semibold mb-2 text-gray-900 dark:text-white">Daftar Kelas Ini</h4>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Dapatkan akses penuh ke semua materi dan tugas.</p>
                                     @if($course->is_premium)
+                                        <div class="mb-3 text-sm">
+                                            @if (($course->original_price ?? 0) > ($course->price ?? 0) && ($course->original_price ?? 0) > 0)
+                                                <p>
+                                                    Harga Asli:
+                                                    <span class="line-through text-gray-500 dark:text-gray-400">Rp {{ number_format($course->original_price, 0, ',', '.') }}</span>
+                                                </p>
+                                                <p class="mt-1">
+                                                    Harga Diskon:
+                                                    <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                                                    <span class="ml-2 text-amber-600 dark:text-amber-300 font-semibold">-{{ $course->discount_percent }}%</span>
+                                                </p>
+                                            @else
+                                                <p>
+                                                    Harga:
+                                                    <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                                                </p>
+                                            @endif
+                                        </div>
                                         <a href="{{ route('checkout.course', $course) }}" class="inline-flex items-center justify-center w-full px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700">
                                             <x-heroicon-o-shopping-cart class="w-5 h-5 mr-2 -ml-1"/>
                                             Beli Kelas (Rp {{ number_format($course->price, 0, ',', '.') }})

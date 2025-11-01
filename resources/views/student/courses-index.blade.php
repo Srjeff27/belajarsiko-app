@@ -109,7 +109,7 @@
                                             <span
                                                 class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 font-medium">
                                                 <x-heroicon-s-star class="w-3.5 h-3.5" />
-                                                Premium (Rp {{ number_format($course->price, 0, ',', '.') }})
+                                                Premium
                                             </span>
                                         @else
                                             <span
@@ -119,6 +119,18 @@
                                             </span>
                                         @endif
                                     </div>
+
+                                    @if ($course->is_premium)
+                                        <div class="text-sm mb-5">
+                                            @if (($course->original_price ?? 0) > ($course->price ?? 0) && ($course->original_price ?? 0) > 0)
+                                                <span class="text-gray-500 dark:text-gray-400 line-through">Rp {{ number_format($course->original_price, 0, ',', '.') }}</span>
+                                                <span class="ml-2 font-semibold text-gray-900 dark:text-white">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                                                <span class="ml-2 text-amber-600 dark:text-amber-300 font-semibold">-{{ $course->discount_percent }}%</span>
+                                            @else
+                                                <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
 
                                     <div
                                         class="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center gap-3">

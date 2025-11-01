@@ -39,7 +39,8 @@ class CourseResource extends Resource
                 Forms\Components\TextInput::make('title')->label('Judul')->required()->maxLength(255),
                 Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(5),
                 Forms\Components\FileUpload::make('thumbnail')->label('Thumbnail')->image()->directory('thumbnails')->disk('public')->visibility('public'),
-                Forms\Components\TextInput::make('price')->label('Harga')->numeric()->required()->default(0),
+                Forms\Components\TextInput::make('original_price')->label('Harga Asli')->numeric()->default(0),
+                Forms\Components\TextInput::make('price')->label('Harga Diskon')->numeric()->required()->default(0),
                 Forms\Components\Toggle::make('is_premium')->label('Premium')->default(false),
                 Forms\Components\Select::make('status')->label('Status')->options([
                     'draft' => 'Draft',

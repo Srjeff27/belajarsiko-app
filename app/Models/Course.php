@@ -12,7 +12,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id', 'course_category_id',
+        'title', 'description', 'thumbnail', 'price', 'original_price', 'is_premium', 'status', 'user_id', 'course_category_id',
         'mentor_signature_name', 'mentor_signature',
         // Certificate defaults per-class
         'certificate_total_jp', 'certificate_competencies',
@@ -77,5 +77,17 @@ class Course extends Model
     public function getMentorNameAttribute(): ?string
     {
         return $this->owner?->name;
+    }
+
+    public function getDiscountPercentAttribute(): int
+    {
+        $original = (float) ($this->original_price ?? 0);
+        $price = (float) ($this->price ?? 0);
+
+        if ($original > 0 && $original > $price) {
+            return (int) round((($original - $price) / $original) * 100);
+        }
+
+        return 0;
     }
 }

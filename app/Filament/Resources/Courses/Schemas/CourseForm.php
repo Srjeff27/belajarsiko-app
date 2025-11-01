@@ -49,8 +49,12 @@ class CourseForm
                     ->directory('thumbnails')
                     ->disk('public')
                     ->visibility('public'),
+                TextInput::make('original_price')
+                    ->label('Harga Asli')
+                    ->numeric()
+                    ->default(0),
                 TextInput::make('price')
-                    ->label('Harga')
+                    ->label('Harga Diskon')
                     ->numeric()
                     ->required()
                     ->default(0),
