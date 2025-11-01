@@ -68,6 +68,19 @@
     filter:contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0,0,0,.35));
     -webkit-filter:contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0,0,0,.35));
   }
+  /* Signature overlay container */
+  .sig-wrap{ position:relative; display:inline-block; height:90px; }
+  .sign .sign-image{ position:relative; z-index:1; }
+  /* Cap/Stamp overlay (Director) */
+  .sign .stamp{
+    position:absolute; z-index:2; left:50%; top:2px;
+    transform:translateX(-50%) rotate(-12deg);
+    -webkit-transform:translateX(-50%) rotate(-12deg);
+    height:98px !important; /* slightly larger for emphasis */
+    margin:0 !important; filter:none !important; -webkit-filter:none !important;
+    opacity:0.55; /* semi-transparent for realistic stamp */
+    pointer-events:none;
+  }
   .sign .line{ width:260px; height:2px; background:#cbd5e1; margin:0 auto 4px; }
   .sign .name{ font-size:18px; font-weight:800; color:var(--ink); margin:2px 0 0; }
   .sign .role{ font-size:12px; color:#6b7280; margin-top:3px; }
@@ -140,7 +153,10 @@
         <!-- Director (KIRI) -->
         <div class="sign">
           @if (!empty($directorSignaturePath) && file_exists($directorSignaturePath))
-            <img src="{{ $directorSignaturePath }}" alt="Tanda tangan Director">
+            <div class="sig-wrap">
+              <img class="sign-image" src="{{ $directorSignaturePath }}" alt="Tanda tangan Director">
+              <img class="stamp" src="{{ public_path('images/Cap.svg') }}" alt="Cap/Stamp">
+            </div>
           @else
             <div style="height:90px"></div>
           @endif
