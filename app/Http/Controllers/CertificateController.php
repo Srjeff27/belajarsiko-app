@@ -66,13 +66,18 @@ class CertificateController extends Controller
             ->replace(['/', '\\'], '-')
             ->trim();
         $formalNumber = $certificate->formal_number
-            ?? $seq . '/SK/BelajarSiko/' . $courseSegment . '/' . $generatedAt->format('Y');
+            ?? (function () use ($course, $setting, $seq, $courseSegment, $generatedAt) {
+                $prefix = $course->certificate_number_prefix
+                    ?? ($setting->default_number_prefix ?? 'SK/BelajarSiko/[Nama Kelas]');
+                $prefix = str_replace(['[Nama Kelas]', '{course}', '{COURSE}'], [$courseSegment, $courseSegment, $courseSegment], $prefix);
+                return $seq . '/' . $prefix . '/' . $generatedAt->format('Y');
+            })();
 
-        // Allow overriding type via stored field or request, default to KELULUSAN
-        $certificateType = strtoupper($certificate->type ?? $request->get('type', 'KELULUSAN'));
+        // Allow overriding type via stored field or request, fallback to course default, default to KELULUSAN
+        $certificateType = strtoupper($certificate->type ?? $request->get('type', $course->certificate_type ?? ($setting->default_certificate_type ?? 'KELULUSAN')));
 
         // Optional extras if the course/certificate provides them
-        $courseSubtitle = $certificate->course_subtitle ?? ($course->subtitle ?? null);
+        $courseSubtitle = $certificate->course_subtitle ?? ($course->certificate_course_subtitle ?? ($setting->default_course_subtitle ?? null));
         // totalJP: prefer explicit field, fallback to sum of competencies JP, then course default
         $totalJP = $certificate->total_jp;
         if (empty($totalJP) && is_array($certificate->competencies)) {
@@ -92,6 +97,11 @@ class CertificateController extends Controller
         if (empty($totalJP) && isset($course->certificate_total_jp)) {
             $totalJP = $course->certificate_total_jp;
         }
+        if (empty($totalJP) && isset($setting->default_total_jp)) {
+            $totalJP = $setting->default_total_jp;
+        }
+
+        $assessedAt = $certificate->assessed_at ?? $course->certificate_assessed_at ?? $setting->default_assessed_at ?? $certificate->generated_at;
 
         $pdf = Pdf::loadView('pdf.certificate', [
             'user' => $user,
@@ -109,6 +119,7 @@ class CertificateController extends Controller
             'certificateType' => $certificateType,
             'courseSubtitle' => $courseSubtitle,
             'totalJP' => $totalJP,
+            'assessedAt' => $assessedAt,
         ])->setPaper('a4', 'landscape');
 
         return $pdf->download('sertifikat-'.$course->id.'-'.$user->id.'.pdf');

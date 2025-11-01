@@ -47,6 +47,10 @@
                                         </form>
                                     @endif
                                 </div>
+                            @else
+                                <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Kelas Sudah Diambil Semua</p>
+                                </div>
                             @endunless
                         </div>
                     </div>
@@ -216,15 +220,15 @@
                                         {{-- Input ala YouTube --}}
                                         @if($isEnrolled)
                                             <div class="flex items-start gap-3 mb-4">
-                                                <span class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+                                                <span class="inline-flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
                                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                                 </span>
                                                 <form method="POST" action="{{ route('lessons.discussions.store', $lesson) }}" class="flex-1">
                                                     @csrf
                                                     <textarea name="content" rows="2" class="w-full border-0 border-b border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-0 resize-none" placeholder="Tulis komentar publik..." required></textarea>
-                                                    <div class="flex items-center gap-3 mt-2">
-                                                        <x-text-input name="google_drive_link" type="url" class="grow" placeholder="Link Google Drive (opsional)" />
-                                                        <x-primary-button class="shrink-0">Kirim</x-primary-button>
+                                                    <div class="flex flex-col sm:flex-row items-center gap-3 mt-2">
+                                                        <x-text-input name="google_drive_link" type="url" class="w-full grow" placeholder="Link Google Drive (opsional)" />
+                                                        <x-primary-button class="w-full sm:w-auto shrink-0">Kirim</x-primary-button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -242,8 +246,8 @@
                                         {{-- Daftar komentar/topik --}}
                                         <div class="space-y-5">
                                             @forelse($lesson->discussions->sortByDesc('created_at') as $discussion)
-                                                <div class="flex items-start gap-3">
-                                                    <span class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-200 text-gray-700 font-semibold">
+                                                <div class="flex flex-col sm:flex-row items-start gap-3">
+                                                    <span class="inline-flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gray-200 text-gray-700 font-semibold">
                                                         {{ strtoupper(substr($discussion->user?->name ?? 'U', 0, 1)) }}
                                                     </span>
                                                     <div class="flex-1">
@@ -288,8 +292,8 @@
                                                                 else { $comments = $comments->sortByDesc('created_at'); }
                                                             @endphp
                                                             @foreach($comments as $comment)
-                                                                <div class="flex items-start gap-3">
-                                                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-gray-700 font-semibold">
+                                                                <div class="flex flex-col sm:flex-row items-start gap-3">
+                                                                    <span class="inline-flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gray-200 text-gray-700 font-semibold">
                                                                         {{ strtoupper(substr($comment->user?->name ?? 'U', 0, 1)) }}
                                                                     </span>
                                                                     <div class="flex-1 text-sm">
@@ -346,9 +350,9 @@
                                                                     <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 font-semibold">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                                                                     <div class="flex-1">
                                                                         <textarea name="content" rows="1" class="w-full border-0 border-b border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-0 resize-none" placeholder="Tulis balasan..." required></textarea>
-                                                                        <div class="flex items-center gap-3 mt-2">
-                                                                            <x-text-input name="google_drive_link" type="url" class="grow" placeholder="Link Google Drive (opsional)" />
-                                                                            <x-secondary-button type="submit" class="shrink-0">Balas</x-secondary-button>
+                                                                        <div class="flex flex-col sm:flex-row items-center gap-3 mt-2">
+                                                                            <x-text-input name="google_drive_link" type="url" class="w-full grow" placeholder="Link Google Drive (opsional)" />
+                                                                            <x-secondary-button type="submit" class="w-full sm:w-auto shrink-0">Balas</x-secondary-button>
                                                                         </div>
                                                                     </div>
                                                                 </form>
@@ -382,6 +386,8 @@
                                                         </button>
                                                     </form>
                                                 @endif
+                                            @else
+                                                <p class="mb-4">Kelas Sudah Diambil Semua</p>
                                             @endunless
                                         </div>
                                     @endif

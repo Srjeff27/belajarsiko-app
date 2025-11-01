@@ -16,6 +16,7 @@ class Course extends Model
         'mentor_signature_name', 'mentor_signature',
         // Certificate defaults per-class
         'certificate_total_jp', 'certificate_competencies',
+        'certificate_type', 'certificate_number_prefix', 'certificate_course_subtitle', 'certificate_assessed_at',
     ];
 
     protected $appends = [
@@ -26,6 +27,7 @@ class Course extends Model
     protected $casts = [
         'certificate_competencies' => 'array',
         'certificate_total_jp' => 'integer',
+        'certificate_assessed_at' => 'datetime',
     ];
 
     public function lessons()

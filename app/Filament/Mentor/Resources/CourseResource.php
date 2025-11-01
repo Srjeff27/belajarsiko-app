@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Actions;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -46,15 +47,26 @@ class CourseResource extends Resource
                     'published' => 'Published',
                 ])->default('draft'),
 
-                Forms\Components\Section::make('Tanda Tangan Mentor')
+                Section::make('Tanda Tangan Mentor')
                     ->schema([
                         Forms\Components\TextInput::make('mentor_signature_name')->label('Nama pada Sertifikat')->placeholder('Kosongkan untuk pakai nama akun mentor'),
                         Forms\Components\FileUpload::make('mentor_signature')->label('Tanda Tangan (PNG/JPG)')->image()->directory('signatures')->disk('public')->visibility('public'),
                     ]),
 
-                Forms\Components\Section::make('Pengaturan Sertifikat Kelas')
+                Section::make('Informasi Sertifikat (Default)')
                     ->schema([
+                        Forms\Components\Select::make('certificate_type')->label('Jenis Sertifikat (default)')->options([
+                            'KELULUSAN' => 'SERTIFIKAT KELULUSAN',
+                            'KOMPETENSI' => 'SERTIFIKAT KOMPETENSI',
+                        ])->native(false),
+                        Forms\Components\TextInput::make('certificate_number_prefix')->label('Nomor Sertifikat (prefix/format)')->placeholder('SK/BelajarSiko/[Nama Kelas]')->helperText('Gunakan [Nama Kelas] / {course} sebagai placeholder judul kelas'),
+                        Forms\Components\TextInput::make('certificate_course_subtitle')->label('Sub-judul Kursus (default)'),
                         Forms\Components\TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
+                        Forms\Components\DatePicker::make('certificate_assessed_at')->label('Tanggal Penilaian (default)')->native(false),
+                    ]),
+
+                Section::make('Pengaturan Sertifikat Kelas')
+                    ->schema([
                         Forms\Components\Repeater::make('certificate_competencies')
                             ->schema([
                                 Forms\Components\TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
@@ -112,4 +124,6 @@ class CourseResource extends Resource
         ];
     }
 }
+
+
 

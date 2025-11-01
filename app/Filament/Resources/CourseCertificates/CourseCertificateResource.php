@@ -5,8 +5,9 @@ namespace App\Filament\Resources\CourseCertificates;
 use App\Models\Course;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Forms;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -26,9 +27,21 @@ class CourseCertificateResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
+            Section::make('Informasi Sertifikat (Default)')->schema([
+                \Filament\Forms\Components\Select::make('certificate_type')->label('Jenis Sertifikat (default)')
+                    ->options([
+                        'KELULUSAN' => 'SERTIFIKAT KELULUSAN',
+                        'KOMPETENSI' => 'SERTIFIKAT KOMPETENSI',
+                    ])->native(false),
+                TextInput::make('certificate_number_prefix')->label('Nomor Sertifikat (prefix/format)')
+                    ->placeholder('SK/BelajarSiko/[Nama Kelas]')
+                    ->helperText('Gunakan [Nama Kelas] / {course} sebagai placeholder judul kelas'),
+                TextInput::make('certificate_course_subtitle')->label('Sub-judul Kursus (default)'),
+                TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
+                \Filament\Forms\Components\DatePicker::make('certificate_assessed_at')->label('Tanggal Penilaian (default)')->native(false),
+            ]),
             Section::make('Pengaturan Sertifikat Kelas')->columnSpanFull()
                 ->schema([
-                    TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
                     Repeater::make('certificate_competencies')->columnSpanFull()
                         ->schema([
                             TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
@@ -62,5 +75,7 @@ class CourseCertificateResource extends Resource
         ];
     }
 }
+
+
 
 

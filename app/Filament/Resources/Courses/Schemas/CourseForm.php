@@ -8,9 +8,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
-use App\Models\CourseCategory;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\DatePicker;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Repeater;
+use App\Models\CourseCategory;
 
 class CourseForm
 {
@@ -18,6 +19,18 @@ class CourseForm
     {
         return $schema
             ->components([
+                Section::make('Informasi Sertifikat (Default)')->schema([
+                    Select::make('certificate_type')->label('Jenis Sertifikat (default)')->options([
+                        'KELULUSAN' => 'SERTIFIKAT KELULUSAN',
+                        'KOMPETENSI' => 'SERTIFIKAT KOMPETENSI',
+                    ])->native(false),
+                    TextInput::make('certificate_number_prefix')->label('Nomor Sertifikat (prefix/format)')
+                        ->placeholder('SK/BelajarSiko/[Nama Kelas]')
+                        ->helperText('Gunakan [Nama Kelas] / {course} sebagai placeholder judul kelas'),
+                    TextInput::make('certificate_course_subtitle')->label('Sub-judul Kursus (default)'),
+                    TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
+                    DatePicker::make('certificate_assessed_at')->label('Tanggal Penilaian (default)')->native(false),
+                ]),
                 Select::make('course_category_id')
                     ->label('Kategori')
                     ->options(fn () => CourseCategory::query()->orderBy('name')->pluck('name', 'id'))
@@ -47,7 +60,6 @@ class CourseForm
 
                 Section::make('Pengaturan Sertifikat Kelas')
                     ->schema([
-                        TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
                         Repeater::make('certificate_competencies')
                             ->schema([
                                 TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),

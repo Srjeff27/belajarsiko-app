@@ -14,6 +14,8 @@ use Filament\Tables;
 use Filament\Forms;
 use Filament\Actions;
 use Filament\Support\Icons\Heroicon;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 
 class CertificateResource extends Resource
 {
@@ -29,7 +31,7 @@ class CertificateResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Forms\Components\Grid::make(12)->schema([
+            Grid::make(12)->schema([
                 Forms\Components\Select::make('user_id')->label('Siswa')->options(
                     fn () => User::query()->where('role','student')->orderBy('name')->pluck('name','id')->toArray()
                 )->searchable()->required()->columnSpan(6),
@@ -39,7 +41,7 @@ class CertificateResource extends Resource
                 Forms\Components\TextInput::make('google_drive_link')->label('Link Google Drive')->url()->nullable()->columnSpan(12),
             ]),
 
-            Forms\Components\Section::make('Informasi Sertifikat')->schema([
+            Section::make('Informasi Sertifikat')->schema([
                 Forms\Components\Select::make('type')->label('Jenis Sertifikat')->options([
                     'KELULUSAN' => 'SERTIFIKAT KELULUSAN',
                     'KOMPETENSI' => 'SERTIFIKAT KOMPETENSI',
@@ -50,7 +52,7 @@ class CertificateResource extends Resource
                 Forms\Components\DatePicker::make('assessed_at')->label('Tanggal Penilaian')->native(false),
             ]),
 
-            Forms\Components\Section::make('Penilaian Kompetensi')->schema([
+            Section::make('Penilaian Kompetensi')->schema([
                 Forms\Components\Repeater::make('competencies')
                     ->schema([
                         Forms\Components\TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
@@ -61,7 +63,7 @@ class CertificateResource extends Resource
                     ->addActionLabel('Tambah Butir'),
             ]),
 
-            Forms\Components\Section::make('Override Tanda Tangan Mentor (Opsional)')->schema([
+            Section::make('Override Tanda Tangan Mentor (Opsional)')->schema([
                 Forms\Components\TextInput::make('mentor_signature_name')->label('Nama di Sertifikat'),
                 Forms\Components\FileUpload::make('mentor_signature')->label('Tanda Tangan Mentor (PNG/JPG)')->image()->directory('signatures')->disk('public')->visibility('public'),
             ]),

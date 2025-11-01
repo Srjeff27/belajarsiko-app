@@ -21,40 +21,54 @@ class StudentPortalController extends Controller
 
     public function courses(Request $request) // Request tidak perlu diinject jika pakai Auth::user()
     {
-        $user = Auth::user(); // <-- Gunakan Auth facade lebih umum
+        $user = Auth::user();
+
+        $isExplore = (bool) $request->boolean('explore');
 
         // Ambil ID kursus yang sudah di-enroll user (lebih efisien)
         $enrolledCourseIds = $user->enrollments()->pluck('course_id');
 
-        // Siapkan daftar kategori untuk filter
-        $categories = CourseCategory::query()
-            ->orderBy('name')
-            ->get(['id','name','slug']);
+        if ($isExplore) {
+            // Mode jelajah: tampilkan semua kelas + filter kategori
+            $categories = CourseCategory::query()->orderBy('name')->get(['id','name','slug']);
 
-        // Tentukan kategori aktif dari query string (dukungan slug atau category_id)
-        $activeCategory = null;
-        if ($slug = $request->query('category')) {
-            $activeCategory = $categories->firstWhere('slug', $slug);
-        } elseif ($request->filled('category_id')) {
-            $activeCategory = $categories->firstWhere('id', (int) $request->query('category_id'));
+            $activeCategory = null;
+            if ($slug = $request->query('category')) {
+                $activeCategory = $categories->firstWhere('slug', $slug);
+            } elseif ($request->filled('category_id')) {
+                $activeCategory = $categories->firstWhere('id', (int) $request->query('category_id'));
+            }
+
+            $query = Course::with([
+                    'owner' => function ($query) { $query->select('id', 'name'); },
+                    'category:id,name,slug',
+                ])
+                ->withCount(['lessons'])
+                ->orderBy('title');
+
+            // Tampilkan hanya kelas yang BELUM diambil oleh siswa
+            $query->whereNotIn('id', $enrolledCourseIds);
+
+            if ($activeCategory) {
+                $query->where('course_category_id', $activeCategory->id);
+            }
+
+            $courses = $query->paginate(12)->withQueryString();
+
+            return view('student.courses-index', compact('courses', 'enrolledCourseIds', 'categories', 'activeCategory', 'isExplore'));
         }
 
-        // Ambil courses + relasi, terapkan filter kategori jika ada
-        $query = Course::with([
+        // Mode Kelas Saya: hanya kelas yang diambil/dibeli (enrolled)
+        $courses = Course::with([
                 'owner' => function ($query) { $query->select('id', 'name'); },
                 'category:id,name,slug',
             ])
             ->withCount(['lessons'])
-            ->orderBy('title');
+            ->whereIn('id', $enrolledCourseIds)
+            ->orderBy('title')
+            ->paginate(12)->withQueryString();
 
-        if ($activeCategory) {
-            $query->where('course_category_id', $activeCategory->id);
-        }
-
-        $courses = $query->paginate(12)->withQueryString();
-
-        // Kirimkan variabel ke view
-        return view('student.courses-index', compact('courses', 'enrolledCourseIds', 'categories', 'activeCategory'));
+        return view('student.courses-index', compact('courses', 'enrolledCourseIds', 'isExplore'));
     }
 
     public function assignments(Request $request)
@@ -106,3 +120,8 @@ class StudentPortalController extends Controller
         return view('student.certificates-index', compact('certificates', 'eligibleCourses', 'requestedCourseIds'));
     }
 }
+
+
+
+
+
