@@ -15,8 +15,13 @@ use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\PurchaseController;
 use App\Http\Controllers\Student\CertificateRequestController;
 use App\Http\Controllers\Auth\GoogleLoginController;
+use App\Http\Controllers\CertificateVerificationController;
 
 Route::view('/', 'welcome');
+
+// Public certificate verification (no auth required) using query param ?code=
+Route::get('/verify', [CertificateVerificationController::class, 'show'])
+    ->name('certificate.verify');
 
 Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified', 'role:student'])

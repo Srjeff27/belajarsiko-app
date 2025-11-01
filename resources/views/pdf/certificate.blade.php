@@ -222,7 +222,7 @@
       <!-- (Halaman 2 TANPA tanda tangan) -->
       <div class="verify-note">
         Sertifikat digital resmi BelajarSiko — keaslian terjamin.
-        Verifikasi keabsahan di <strong>belajarsiko.my.id/verify/RQ5AHGUJAS</strong>.
+        Verifikasi keabsahan di <strong>{{ url('/verify') . '?code=' . $certificate->unique_code }}</strong>.
       </div>
 
     </div>
