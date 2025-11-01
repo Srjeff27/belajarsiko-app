@@ -1,238 +1,247 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8">
-    <style>
-        @page {
-            size: A4 landscape;
-            margin: 30px 40px;
-        }
+<meta charset="utf-8">
+<title>Sertifikat BelajarSiko</title>
+<style>
+  @page { size: A4 landscape; margin: 30px 40px; }
 
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            color: #1f2937;
-            margin: 0;
-            padding: 0;
-            background: #fff;
-        }
+  :root{
+    --primary:#4f47e6; --primary-200:#c7c9fa; --ink:#1f2937; --muted:#6b7280;
+    --scale:1.00;
+  }
+  body{ font-family: DejaVu Sans, sans-serif; color:var(--ink); margin:0; background:#fff; }
 
-        :root {
-            --primary: #4f47e6;
-        }
+  /* ====== FONT LUSITANA (untuk nama) ====== */
+  @font-face{
+    font-family:'Lusitana';
+    font-style:normal; font-weight:400;
+    src:url("{{ public_path('fonts/lusitana/Lusitana-Regular.ttf') }}") format('truetype');
+  }
+  @font-face{
+    font-family:'Lusitana';
+    font-style:normal; font-weight:700;
+    src:url("{{ public_path('fonts/lusitana/Lusitana-Bold.ttf') }}") format('truetype');
+  }
 
-        .frame {
-            border: 8px solid var(--primary);
-            border-radius: 12px;
-            background: #fff;
-            padding: 10px;
-        }
+  /* ====== TANPA BINGKAI (bersih) ====== */
+  .frame{ border:none; border-radius:0; background:transparent; padding:0; box-shadow:none; }
+  .frame-inner{ border:none; border-radius:0; padding:42px 80px; min-height:530px; position:relative; box-sizing:border-box; }
 
-        .frame-inner {
-            border: 1px solid #c7c9fa;
-            border-radius: 8px;
-            padding: 40px 80px;
-            height: 530px;
-            box-sizing: border-box;
-            position: relative;
-        }
+  /* ====== BRAND ====== */
+  .brand-centered{ text-align:center; margin-bottom:18px; transform:scale(var(--scale)); transform-origin:center top; }
+  .brand-logo-text{ white-space:nowrap; }
+  .brand-logo-text img{ height:56px; position:relative; top:-6px; vertical-align:middle; }
+  .brand-logo-text h2{ display:inline-block; margin:0 0 0 10px; color:var(--primary); font-size:32px; font-weight:800; vertical-align:middle; }
+  .brand-code{ display:block; margin-top:-3px; font-size:16px; color:#6b7280; line-height:1.1; font-family: DejaVu Sans Mono, monospace; font-style:italic; }
+  .brand-number{ display:block; margin-top:2px; font-size:14px; color:#6b7280; line-height:1.1; font-family: DejaVu Sans Mono, monospace; }
 
-        /* Header / Brand */
-        .brand-centered {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  /* ====== JUDUL ====== */
+  .title-wrap{ text-align:center; margin-top:10px; }
+  .title-main{
+    font-family: "DejaVu Serif", serif; font-weight:900; font-size:44px;
+    letter-spacing:6px; text-transform:uppercase; color:#1f4a5a; margin:10px 0 4px;
+  }
+  .title-sub{
+    font-family: "DejaVu Serif", serif; font-weight:600; font-size:18px;
+    letter-spacing:8px; text-transform:uppercase; color:#6b7280; margin:0 0 12px;
+  }
 
-        .brand-logo-text img {
-            height: 60px;
-            position: relative;
-            top: -3px;
-            /* Naikkan logo sebesar 3px */
-            vertical-align: middle;
-        }
+  /* ====== KONTEN ====== */
+  .sub{ text-align:center; margin:6px 0 14px; font-size:16px; color:#6b7280; }
+  .name{
+    text-align:center; font-family:'Lusitana','DejaVu Serif',serif;
+    font-weight:700; font-style:normal; font-size:45px;
+    line-height:1.15; margin:12px 0; color:#111827;
+  }
+  .desc{ text-align:center; color:#374151; font-size:18px; margin:20px 0 10px; }
+  .course{ text-align:center; font-size:32px; font-weight:800; color:var(--primary); margin-bottom:18px; }
+  .course-subtitle{ text-align:center; font-size:16px; color:#4b5563; font-style:italic; margin-top:-8px; margin-bottom:10px; }
+  .duration{ text-align:center; font-size:14px; color:#6b7280; margin-top:0; }
+  .muted{ text-align:center; font-size:14px; color:#6b7280; }
 
+  /* ====== TANDA TANGAN ====== */
+  .signers{ position:absolute; bottom:50px; left:0; right:0; text-align:center; }
+  .sign{ display:inline-block; width:40%; margin:0 3%; vertical-align:top; }
+  .sign img{
+    height:90px; margin-bottom:2px;
+    filter:contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0,0,0,.35));
+    -webkit-filter:contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0,0,0,.35));
+  }
+  .sign .line{ width:260px; height:2px; background:#cbd5e1; margin:0 auto 4px; }
+  .sign .name{ font-size:18px; font-weight:800; color:var(--ink); margin:2px 0 0; }
+  .sign .role{ font-size:12px; color:#6b7280; margin-top:3px; }
 
-        .brand-logo-text h2 {
-            display: inline-block;
-            margin: 0 0 0 8px;
-            color: var(--primary);
-            font-size: 32px;
-            font-weight: 700;
-            vertical-align: middle;
-        }
+  /* ====== CATATAN VERIFIKASI (kecil & italic) – hanya dipakai di halaman 2 ====== */
+  .verify-note{
+    display:block;
+    margin-top:3px;            /* tepat 3px di bawah area tanda tangan */
+    font-size:9px;             /* kecil */
+    font-style:italic;         /* italic */
+    color:#6b7280;
+  }
 
-        .brand-code {
-            font-size: 14px;
-            color: #6b7280;
-            font-family: DejaVu Sans Mono, monospace;
-            margin-top: 6px;
-        }
+  /* ====== WATERMARK ====== */
+  .watermark{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-45deg); z-index:-1; opacity:.05; }
+  .watermark img{ width:520px; }
 
-        /* Konten utama */
-        .cert-title {
-            text-align: center;
-            margin: 16px 0 0;
-            font-size: 26px;
-            font-weight: 700;
-            color: #374151;
-            letter-spacing: 1px;
-        }
-
-        .sub {
-            text-align: center;
-            margin: 4px 0 16px;
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .name {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 800;
-            color: #111827;
-            margin: 12px 0;
-            line-height: 1.2;
-        }
-
-        .desc {
-            text-align: center;
-            color: #374151;
-            font-size: 16px;
-            margin-bottom: 8px;
-            margin-top: 20px;
-        }
-
-        .course {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
-        }
-
-        .muted {
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        /* Tanda tangan di tengah bawah */
-        .signers {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            text-align: center;
-        }
-
-        .sign {
-            display: inline-block;
-            text-align: center;
-        }
-
-        .sign img {
-            height: 85px;
-            margin-bottom: 5px;
-            filter: contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
-            -webkit-filter: contrast(125%) brightness(90%) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
-        }
-
-
-        .sign .line {
-            width: 200px;
-            height: 1px;
-            background: #cbd5e1;
-            margin: 8px auto 6px;
-        }
-
-        .sign .name {
-            font-size: 13px;
-            font-weight: 700;
-            margin: 0;
-            color: #1f2937;
-        }
-
-        .sign .role {
-            font-size: 11px;
-            color: #6b7280;
-        }
-
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            z-index: -1;
-            opacity: 0.05;
-        }
-
-        .watermark img {
-            width: 450px;
-        }
-
-        /* Footer */
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            font-size: 10px;
-            color: #9ca3af;
-            text-align: center;
-        }
-    </style>
-    <title>Sertifikat BelajarSiko</title>
+  /* ====== LAMPIRAN KOMPETENSI ====== */
+  .page-break{ page-break-before: always; }
+  .section-title{ text-align:center; font-family: "DejaVu Serif", serif; font-weight:800; font-size:22px; color:#1f4a5a; margin:0 0 18px; }
+  table.competency{ width:100%; border-collapse:collapse; font-size:12px; }
+  table.competency th, table.competency td{ border:1px solid #d1d5db; padding:8px; vertical-align:top; }
+  table.competency th{ background:#eef2ff; color:#1f2937; text-transform:uppercase; font-weight:700; font-size:11px; }
+  .assess-meta{ margin-top:14px; font-size:12px; color:#374151; }
+</style>
 </head>
-
 <body>
-    <div class="frame">
-        <div class="frame-inner">
 
-            <!-- Watermark -->
-            <div class="watermark">
-                <img src="{{ public_path('images/logo-sbu.svg') }}" alt="Watermark" />
-            </div>
+  <!-- Halaman 1 -->
+  <div class="frame">
+    <div class="frame-inner">
+      <!-- Watermark -->
+      <div class="watermark">
+        <img src="{{ public_path('images/logo-sbu.svg') }}" alt="Watermark">
+      </div>
 
-            <!-- Brand -->
-            <div class="brand-centered">
-                <div class="brand-logo-text">
-                    <img src="{{ public_path('images/logo-sbu.svg') }}" alt="BelajarSiko" />
-                    <h2>BelajarSiko</h2>
-                </div>
-                <div class="brand-code">Kode: {{ $certificate->unique_code }}</div>
-            </div>
-
-            <!-- Isi utama -->
-            <div class="cert-title">SERTIFIKAT PENYELESAIAN</div>
-            <div class="sub">DIBERIKAN KEPADA</div>
-            <div class="name">{{ strtoupper($user->name) }}</div>
-            <div class="desc">Telah berhasil menyelesaikan dan lulus dari kursus:</div>
-            <div class="course">{{ $course->title }}</div>
-            <div class="muted">Diterbitkan pada {{ $certificate->generated_at->isoFormat('D MMMM YYYY') }}</div>
-
-            <!-- TTD Tengah -->
-            <div class="signers">
-                <div class="sign">
-                    @if (!empty($directorSignaturePath) && file_exists($directorSignaturePath))
-                        <img src="{{ $directorSignaturePath }}" alt="Tanda tangan Director" />
-                    @else
-                        <div style="height:65px"></div>
-                    @endif
-                    <div class="line"></div>
-                    <div class="name">{{ $directorName }}</div>
-                    <div class="role">Director of BelajarSiko</div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                Sertifikat ini diterbitkan secara digital oleh BelajarSiko.<br>
-                Verifikasi di belajarsiko.my.id/verify/{{ $certificate->unique_code }}
-            </div>
-
+      <!-- Brand -->
+      <div class="brand-centered">
+        <div class="brand-logo-text">
+          <img src="{{ public_path('images/logo-sbu.svg') }}" alt="BelajarSiko">
+          <h2>BelajarSiko</h2>
         </div>
-    </div>
-</body>
+        <div class="brand-code">Kode: {{ $certificate->unique_code }}</div>
+        @if(!empty($formalNumber))
+          <div class="brand-number">Nomor: {{ $formalNumber }}</div>
+        @endif
+      </div>
 
+      <!-- Judul -->
+      <div class="title-wrap">
+        <div class="title-main">SERTIFIKAT</div>
+        <div class="title-sub">{{ $certificateType ?? 'KELULUSAN' }}</div>
+      </div>
+
+      <div class="sub">DIBERIKAN KEPADA</div>
+      <div class="name">{{ strtoupper($user->name) }}</div>
+      <div class="desc">Dengan ini menyatakan bahwa nama di bawah ini telah <strong>LULUS</strong> dan terbukti <strong>KOMPETEN</strong> dalam kursus:</div>
+      <div class="course">{{ $course->title }}</div>
+      @if(!empty($courseSubtitle))
+        <div class="course-subtitle">{{ $courseSubtitle }}</div>
+      @endif
+      @if(!empty($totalJP))
+        <div class="duration">Total {{ $totalJP }} Jam Pelajaran (JP)</div>
+      @endif
+      <div class="muted">Diterbitkan pada {{ $certificate->generated_at->isoFormat('D MMMM YYYY') }}</div>
+
+      <!-- Tanda tangan (Director kiri, Mentor kanan) -->
+      <div class="signers">
+        <!-- Director (KIRI) -->
+        <div class="sign">
+          @if (!empty($directorSignaturePath) && file_exists($directorSignaturePath))
+            <img src="{{ $directorSignaturePath }}" alt="Tanda tangan Director">
+          @else
+            <div style="height:90px"></div>
+          @endif
+          <div class="line"></div>
+          <div class="name">{{ $directorName }}</div>
+          <div class="role">Director of BelajarSiko</div>
+        </div>
+        <!-- Mentor (KANAN) -->
+        <div class="sign">
+          @if (!empty($mentorSignaturePath) && file_exists($mentorSignaturePath))
+            <img src="{{ $mentorSignaturePath }}" alt="Tanda tangan Mentor">
+          @else
+            <div style="height:90px"></div>
+          @endif
+          <div class="line"></div>
+          <div class="name">{{ $mentorName }}</div>
+          <div class="role">Mentor</div>
+        </div>
+
+        <!-- (Tidak ada verify-note di halaman 1) -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman 2: Rincian Kompetensi -->
+  <div class="page-break"></div>
+  <div class="frame">
+    <div class="frame-inner">
+
+      <div class="section-title">Rincian Kompetensi</div>
+      @php
+        $items = $competencyItems ?? ($certificate->competencies ?? null);
+        if (!is_array($items) || empty($items)) {
+            $items = [
+              ['kompetensi' => 'Logika & Pemecahan Masalah', 'butir' => 'Menganalisis masalah dan merancang solusi terstruktur', 'nilai' => '', 'keterangan' => ''],
+              ['kompetensi' => 'Algoritma Dasar', 'butir' => 'Kontrol alur, perulangan, fungsi/prosedur', 'nilai' => '', 'keterangan' => ''],
+              ['kompetensi' => 'Struktur Data Dasar', 'butir' => 'Array/List, Dictionary/Map, Stack/Queue', 'nilai' => '', 'keterangan' => ''],
+              ['kompetensi' => 'Pemrograman Python Dasar', 'butir' => 'Sintaks dasar, modul, pengelolaan lingkungan', 'nilai' => '', 'keterangan' => ''],
+              ['kompetensi' => 'Debugging & Testing', 'butir' => 'Menemukan, memperbaiki bug dan uji sederhana', 'nilai' => '', 'keterangan' => ''],
+            ];
+        }
+      @endphp
+
+      <table class="competency">
+        <thead>
+          <tr>
+            <th style="width:28%">Kompetensi</th>
+            <th>Indikator/Butir Penilaian</th>
+            <th style="width:12%">Nilai/Skor</th>
+            <th style="width:26%">Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($items as $row)
+            <tr>
+              <td>{{ $row['kompetensi'] ?? ($row['name'] ?? '') }}</td>
+              <td>{{ $row['butir'] ?? ($row['indicator'] ?? '') }}</td>
+              <td>{{ $row['nilai'] ?? ($row['score'] ?? '') }}</td>
+              <td>{{ $row['keterangan'] ?? ($row['note'] ?? '') }}</td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+
+      <div class="assess-meta">
+        Penilaian diisi oleh Admin dan Mentor Kelas. Tanggal penilaian: {{ ($certificate->assessed_at ?? $certificate->generated_at)->isoFormat('D MMMM YYYY') }}.
+      </div>
+
+      <!-- Tanda tangan (Director kiri, Mentor kanan) -->
+      <div class="signers" style="bottom:35px;">
+        <!-- Director (KIRI) -->
+        <div class="sign">
+          @if (!empty($directorSignaturePath) && file_exists($directorSignaturePath))
+            <img src="{{ $directorSignaturePath }}" alt="Tanda tangan Director">
+          @else
+            <div style="height:90px"></div>
+          @endif
+          <div class="line"></div>
+          <div class="name">{{ $directorName }}</div>
+          <div class="role">Director of BelajarSiko</div>
+        </div>
+        <!-- Mentor (KANAN) -->
+        <div class="sign">
+          @if (!empty($mentorSignaturePath) && file_exists($mentorSignaturePath))
+            <img src="{{ $mentorSignaturePath }}" alt="Tanda tangan Mentor">
+          @else
+            <div style="height:90px"></div>
+          @endif
+          <div class="line"></div>
+          <div class="name">{{ $mentorName }}</div>
+          <div class="role">Mentor</div>
+        </div>
+
+        <!-- Catatan verifikasi: hanya di HALAMAN 2, kecil & italic -->
+        <div class="verify-note">
+          Sertifikat digital resmi BelajarSiko — keaslian terjamin.
+          Verifikasi keabsahan di <strong>belajarsiko.my.id/verify/RQ5AHGUJAS</strong>.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
 </html>

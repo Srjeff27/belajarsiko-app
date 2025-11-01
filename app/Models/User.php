@@ -35,6 +35,9 @@ class User extends Authenticatable implements FilamentUser
         'universitas',
         'wa_number',
         'alamat',
+        // Default certificate signature for mentors
+        'certificate_signature_name',
+        'certificate_signature',
     ];
 
     /**

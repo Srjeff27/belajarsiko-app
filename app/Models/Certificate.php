@@ -12,10 +12,17 @@ class Certificate extends Model
 
     protected $fillable = [
         'user_id', 'course_id', 'generated_at', 'unique_code', 'google_drive_link',
+        // Extended certificate metadata
+        'type', 'formal_number', 'course_subtitle', 'total_jp', 'assessed_at',
+        'competencies',
+        // Optional mentor overrides
+        'mentor_signature_name', 'mentor_signature',
     ];
 
     protected $casts = [
         'generated_at' => 'datetime',
+        'assessed_at' => 'datetime',
+        'competencies' => 'array',
     ];
 
     public function user()

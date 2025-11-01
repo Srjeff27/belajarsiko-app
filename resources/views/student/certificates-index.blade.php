@@ -78,8 +78,20 @@
                                                 {{ $certificate->course->title }}
                                              </a>
                                         </h4>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">
                                             Diperoleh pada: {{ $certificate->generated_at->isoFormat('D MMMM YYYY') }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                                            Kode: <span class="font-mono">{{ $certificate->unique_code }}</span>
+                                        </p>
+                                        @php
+                                            $romanMonths = [1=>'I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+                                            $genAt = $certificate->generated_at ?? now();
+                                            $formalNumber = ($certificate->formal_number ?? null) ?: str_pad((string) ($certificate->id ?? 0), 3, '0', STR_PAD_LEFT)
+                                                .'/SK/BelajarSiko/'. ($romanMonths[(int) $genAt->format('n')] ?? '') .'/'. $genAt->format('Y');
+                                        @endphp
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                            Nomor: <span class="font-mono">{{ $formalNumber }}</span>
                                         </p>
 
                                         {{-- Tombol Unduh --}}
