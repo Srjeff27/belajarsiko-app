@@ -14,11 +14,18 @@ class Course extends Model
     protected $fillable = [
         'title', 'description', 'thumbnail', 'price', 'is_premium', 'status', 'user_id', 'course_category_id',
         'mentor_signature_name', 'mentor_signature',
+        // Certificate defaults per-class
+        'certificate_total_jp', 'certificate_competencies',
     ];
 
     protected $appends = [
         'thumbnail_url',
         'mentor_name',
+    ];
+
+    protected $casts = [
+        'certificate_competencies' => 'array',
+        'certificate_total_jp' => 'integer',
     ];
 
     public function lessons()

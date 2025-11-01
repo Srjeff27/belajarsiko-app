@@ -9,6 +9,8 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
 use App\Models\CourseCategory;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
 
 class CourseForm
 {
@@ -42,6 +44,18 @@ class CourseForm
                 Toggle::make('is_premium')
                     ->label('Premium')
                     ->default(false),
+
+                Section::make('Pengaturan Sertifikat Kelas')
+                    ->schema([
+                        TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
+                        Repeater::make('certificate_competencies')
+                            ->schema([
+                                TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
+                                Textarea::make('butir')->label('Indikator / Butir')->rows(2)->columnSpan(5),
+                                TextInput::make('jp')->label('JP')->numeric()->minValue(0)->columnSpan(2),
+                                TextInput::make('keterangan')->label('Keterangan')->columnSpan(2),
+                            ])->columns(12)->addActionLabel('Tambah Kompetensi'),
+                    ]),
             ]);
     }
 }

@@ -60,7 +60,7 @@
   .duration{ text-align:center; font-size:14px; color:#6b7280; margin-top:0; }
   .muted{ text-align:center; font-size:14px; color:#6b7280; }
 
-  /* ====== TANDA TANGAN ====== */
+  /* ====== TANDA TANGAN (Halaman 1 saja) ====== */
   .signers{ position:absolute; bottom:50px; left:0; right:0; text-align:center; }
   .sign{ display:inline-block; width:40%; margin:0 3%; vertical-align:top; }
   .sign img{
@@ -72,13 +72,14 @@
   .sign .name{ font-size:18px; font-weight:800; color:var(--ink); margin:2px 0 0; }
   .sign .role{ font-size:12px; color:#6b7280; margin-top:3px; }
 
-  /* ====== CATATAN VERIFIKASI (kecil & italic) – hanya dipakai di halaman 2 ====== */
+  /* ====== CATATAN VERIFIKASI (hanya halaman 2) ====== */
   .verify-note{
     display:block;
-    margin-top:3px;            /* tepat 3px di bawah area tanda tangan */
-    font-size:9px;             /* kecil */
-    font-style:italic;         /* italic */
+    margin-top:12px;
+    font-size:9px;       /* kecil */
+    font-style:italic;   /* italic */
     color:#6b7280;
+    text-align:center;
   }
 
   /* ====== WATERMARK ====== */
@@ -124,7 +125,7 @@
 
       <div class="sub">DIBERIKAN KEPADA</div>
       <div class="name">{{ strtoupper($user->name) }}</div>
-      <div class="desc">Dengan ini menyatakan bahwa nama di bawah ini telah <strong>LULUS</strong> dan terbukti <strong>KOMPETEN</strong> dalam kursus:</div>
+      <div class="desc">Dengan ini menyatakan bahwa nama tersebut telah <strong>LULUS</strong> dan terbukti <strong>KOMPETEN</strong> dalam kursus:</div>
       <div class="course">{{ $course->title }}</div>
       @if(!empty($courseSubtitle))
         <div class="course-subtitle">{{ $courseSubtitle }}</div>
@@ -158,8 +159,6 @@
           <div class="name">{{ $mentorName }}</div>
           <div class="role">Mentor</div>
         </div>
-
-        <!-- (Tidak ada verify-note di halaman 1) -->
       </div>
     </div>
   </div>
@@ -171,7 +170,7 @@
 
       <div class="section-title">Rincian Kompetensi</div>
       @php
-        $items = $competencyItems ?? ($certificate->competencies ?? null);
+        $items = $competencyItems ?? ($certificate->competencies ?? ($course->certificate_competencies ?? null));
         if (!is_array($items) || empty($items)) {
             $items = [
               ['kompetensi' => 'Logika & Pemecahan Masalah', 'butir' => 'Menganalisis masalah dan merancang solusi terstruktur', 'nilai' => '', 'keterangan' => ''],
@@ -186,10 +185,10 @@
       <table class="competency">
         <thead>
           <tr>
-            <th style="width:28%">Kompetensi</th>
+            <th style="width:32%">Kompetensi</th>
             <th>Indikator/Butir Penilaian</th>
-            <th style="width:12%">Nilai/Skor</th>
-            <th style="width:26%">Keterangan</th>
+            <th style="width:10%">JP</th>
+            <th style="width:22%">Keterangan</th>
           </tr>
         </thead>
         <tbody>
@@ -197,47 +196,17 @@
             <tr>
               <td>{{ $row['kompetensi'] ?? ($row['name'] ?? '') }}</td>
               <td>{{ $row['butir'] ?? ($row['indicator'] ?? '') }}</td>
-              <td>{{ $row['nilai'] ?? ($row['score'] ?? '') }}</td>
+              <td>{{ $row['jp'] ?? '' }}</td>
               <td>{{ $row['keterangan'] ?? ($row['note'] ?? '') }}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
 
-      <div class="assess-meta">
-        Penilaian diisi oleh Admin dan Mentor Kelas. Tanggal penilaian: {{ ($certificate->assessed_at ?? $certificate->generated_at)->isoFormat('D MMMM YYYY') }}.
-      </div>
-
-      <!-- Tanda tangan (Director kiri, Mentor kanan) -->
-      <div class="signers" style="bottom:35px;">
-        <!-- Director (KIRI) -->
-        <div class="sign">
-          @if (!empty($directorSignaturePath) && file_exists($directorSignaturePath))
-            <img src="{{ $directorSignaturePath }}" alt="Tanda tangan Director">
-          @else
-            <div style="height:90px"></div>
-          @endif
-          <div class="line"></div>
-          <div class="name">{{ $directorName }}</div>
-          <div class="role">Director of BelajarSiko</div>
-        </div>
-        <!-- Mentor (KANAN) -->
-        <div class="sign">
-          @if (!empty($mentorSignaturePath) && file_exists($mentorSignaturePath))
-            <img src="{{ $mentorSignaturePath }}" alt="Tanda tangan Mentor">
-          @else
-            <div style="height:90px"></div>
-          @endif
-          <div class="line"></div>
-          <div class="name">{{ $mentorName }}</div>
-          <div class="role">Mentor</div>
-        </div>
-
-        <!-- Catatan verifikasi: hanya di HALAMAN 2, kecil & italic -->
-        <div class="verify-note">
-          Sertifikat digital resmi BelajarSiko — keaslian terjamin.
-          Verifikasi keabsahan di <strong>belajarsiko.my.id/verify/RQ5AHGUJAS</strong>.
-        </div>
+      <!-- (Halaman 2 TANPA tanda tangan) -->
+      <div class="verify-note">
+        Sertifikat digital resmi BelajarSiko — keaslian terjamin.
+        Verifikasi keabsahan di <strong>belajarsiko.my.id/verify/RQ5AHGUJAS</strong>.
       </div>
 
     </div>

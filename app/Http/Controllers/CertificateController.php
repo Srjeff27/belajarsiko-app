@@ -60,19 +60,38 @@ class CertificateController extends Controller
 
         // Build presentational helpers for the certificate view
         $generatedAt = $certificate->generated_at ?? now();
-        $romanMonths = [1=>'I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
-        $romanMonth = $romanMonths[(int) $generatedAt->format('n')] ?? '';
-        // Prefer a stored formal number if available; otherwise create a readable default pattern
+        // Prefer a stored formal number if available; otherwise create default: 004/SK/BelajarSiko/[Nama Kelas]/YYYY
+        $seq = str_pad((string) ($certificate->id ?? 0), 3, '0', STR_PAD_LEFT);
+        $courseSegment = Str::of($course->title ?? 'Kelas')
+            ->replace(['/', '\\'], '-')
+            ->trim();
         $formalNumber = $certificate->formal_number
-            ?? str_pad((string) ($certificate->id ?? 0), 3, '0', STR_PAD_LEFT)
-                .'/SK/BelajarSiko/'. $romanMonth .'/'. $generatedAt->format('Y');
+            ?? $seq . '/SK/BelajarSiko/' . $courseSegment . '/' . $generatedAt->format('Y');
 
         // Allow overriding type via stored field or request, default to KELULUSAN
         $certificateType = strtoupper($certificate->type ?? $request->get('type', 'KELULUSAN'));
 
         // Optional extras if the course/certificate provides them
         $courseSubtitle = $certificate->course_subtitle ?? ($course->subtitle ?? null);
-        $totalJP = $certificate->total_jp ?? ($course->total_jp ?? null);
+        // totalJP: prefer explicit field, fallback to sum of competencies JP, then course default
+        $totalJP = $certificate->total_jp;
+        if (empty($totalJP) && is_array($certificate->competencies)) {
+            $sum = 0; $hasAny = false;
+            foreach ($certificate->competencies as $row) {
+                if (isset($row['jp']) && $row['jp'] !== '') { $sum += (int) $row['jp']; $hasAny = true; }
+            }
+            if ($hasAny) { $totalJP = $sum; }
+        }
+        if (empty($totalJP) && is_array($course->certificate_competencies ?? null)) {
+            $sum = 0; $hasAny = false;
+            foreach ($course->certificate_competencies as $row) {
+                if (isset($row['jp']) && $row['jp'] !== '') { $sum += (int) $row['jp']; $hasAny = true; }
+            }
+            if ($hasAny) { $totalJP = $sum; }
+        }
+        if (empty($totalJP) && isset($course->certificate_total_jp)) {
+            $totalJP = $course->certificate_total_jp;
+        }
 
         $pdf = Pdf::loadView('pdf.certificate', [
             'user' => $user,

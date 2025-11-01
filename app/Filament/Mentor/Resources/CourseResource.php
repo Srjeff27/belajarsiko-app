@@ -51,6 +51,18 @@ class CourseResource extends Resource
                         Forms\Components\TextInput::make('mentor_signature_name')->label('Nama pada Sertifikat')->placeholder('Kosongkan untuk pakai nama akun mentor'),
                         Forms\Components\FileUpload::make('mentor_signature')->label('Tanda Tangan (PNG/JPG)')->image()->directory('signatures')->disk('public')->visibility('public'),
                     ]),
+
+                Forms\Components\Section::make('Pengaturan Sertifikat Kelas')
+                    ->schema([
+                        Forms\Components\TextInput::make('certificate_total_jp')->label('Total JP (default)')->numeric()->minValue(0),
+                        Forms\Components\Repeater::make('certificate_competencies')
+                            ->schema([
+                                Forms\Components\TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
+                                Forms\Components\Textarea::make('butir')->label('Indikator / Butir')->rows(2)->columnSpan(5),
+                                Forms\Components\TextInput::make('jp')->label('JP')->numeric()->minValue(0)->columnSpan(2),
+                                Forms\Components\TextInput::make('keterangan')->label('Keterangan')->columnSpan(2),
+                            ])->columns(12)->addActionLabel('Tambah Kompetensi'),
+                    ]),
             ]);
     }
 
@@ -69,7 +81,7 @@ class CourseResource extends Resource
             ])
             ->filters([])
             ->recordActions([
-                Actions\EditAction::make(),
+                Actions\EditAction::make()->modalWidth('7xl'),
             ])
             ->toolbarActions([
                 Actions\BulkActionGroup::make([
@@ -100,3 +112,4 @@ class CourseResource extends Resource
         ];
     }
 }
+

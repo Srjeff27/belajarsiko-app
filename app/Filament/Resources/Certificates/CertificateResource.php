@@ -54,8 +54,8 @@ class CertificateResource extends Resource
                 Forms\Components\Repeater::make('competencies')
                     ->schema([
                         Forms\Components\TextInput::make('kompetensi')->label('Kompetensi')->required()->columnSpan(3),
-                        Forms\Components\Textarea::make('butir')->label('Indikator / Butir Penilaian')->rows(2)->columnSpan(5),
-                        Forms\Components\TextInput::make('nilai')->label('Nilai/Skor')->columnSpan(2),
+                        Forms\Components\Textarea::make('butir')->label('Indikator / Butir Penilaian')->rows(2)->columnSpan(6),
+                        Forms\Components\TextInput::make('jp')->label('JP')->numeric()->minValue(0)->columnSpan(2),
                         Forms\Components\TextInput::make('keterangan')->label('Keterangan')->columnSpan(2),
                     ])->columns(12)->collapsed(false)->itemLabel(fn (array $state) => $state['kompetensi'] ?? 'Butir')
                     ->addActionLabel('Tambah Butir'),
@@ -104,3 +104,4 @@ class CertificateResource extends Resource
         ];
     }
 }
+

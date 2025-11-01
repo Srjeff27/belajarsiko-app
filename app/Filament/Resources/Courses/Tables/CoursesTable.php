@@ -25,7 +25,7 @@ class CoursesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->modalWidth('7xl'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
