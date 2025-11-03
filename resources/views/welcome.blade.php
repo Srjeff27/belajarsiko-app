@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BelajarSiko | Platform Belajar Online Terdepan</title> {{-- [Ubah] spasi --}}
+    <title>BelajarSiko | Platform Belajar Online Terdepan</title>
 
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-sbu.svg') }}">
 
@@ -22,15 +22,29 @@
         <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
         <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
     @else
-        {{-- @viteReactRefresh --}} {{-- Hapus jika tidak pakai React --}}
+        {{-- @viteReactRefresh --}}
         @vite(['resources/js/app.js', 'resources/css/app.css'])
     @endif
+
+    {{-- [BARU] Tambahkan CSS untuk AOS (Animate On Scroll) --}}
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
         .gradient-bg {
             background: radial-gradient(1200px 600px at 10% 10%, rgba(99, 102, 241, 0.25), transparent 60%),
                 radial-gradient(1000px 600px at 90% 10%, rgba(236, 72, 153, 0.25), transparent 60%),
                 linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0ea5e9 100%);
+            
+            /* [BARU] Tambahkan background-size dan animasi */
+            background-size: 200% 200%;
+            animation: gradient-flow 15s ease-in-out infinite;
+        }
+
+        /* [BARU] Keyframes untuk animasi gradient */
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .card-hover {
@@ -69,14 +83,12 @@
     <div id="announce" class="bg-indigo-600 text-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between text-sm">
             <p class="flex items-center gap-2">
-                {{-- [Ubah] Ganti SVG dengan Heroicon --}}
                 <x-heroicon-s-information-circle class="w-4 h-4" />
                 Diskon Mahasiswa & sertifikat digital untuk kelas pemula.<span class="font-semibold">daftar gratis
                     sekarang!</span>
             </p>
             <button id="close-announce" class="p-1/2 rounded hover:bg-white/10">
                 <span class="sr-only">Tutup</span>
-                {{-- [Ubah] Ganti SVG dengan Heroicon --}}
                 <x-heroicon-s-x-mark class="w-5 h-5" />
             </button>
         </div>
@@ -93,7 +105,6 @@
                     </div>
                     <span class="text-xl font-bold text-[#4F47E6] leading-none">BelajarSiko</span>
                 </a>
-
 
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#beranda" class="text-gray-600 hover:text-indigo-600 font-medium">Beranda</a>
@@ -120,7 +131,6 @@
 
                 <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600">
                     <span class="sr-only">Buka menu</span>
-                    {{-- [Ubah] Ganti SVG dengan Heroicon --}}
                     <x-heroicon-o-bars-3 id="hamburger-icon" class="h-6 w-6" />
                     <x-heroicon-o-x-mark id="close-icon" class="h-6 w-6 hidden" />
                 </button>
@@ -162,18 +172,18 @@
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                     <div class="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
-                        <div
+                        <div data-aos="fade-up"
                             class="inline-flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm mb-4 ring-1 ring-white/20 glass">
                             <x-heroicon-s-sparkles class="w-4 h-4 text-yellow-300" />
                             <span>Akses materi premium + komunitas kampus</span>
                         </div>
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-aos="fade-up" data-aos-delay="100">
                             Belajar Lebih Mudah
-                            dengan <span class="text-yellow-300">BelajarSiko</span></h1> {{-- [Ubah] spasi --}}
-                        <p class="text-lg md:text-xl mb-8 text-indigo-100">Ribuan materi berkualitas, mentoring ringan,
+                            dengan <span class="text-yellow-300">BelajarSiko</span></h1>
+                        <p class="text-lg md:text-xl mb-8 text-indigo-100" data-aos="fade-up" data-aos-delay="200">Ribuan materi berkualitas, mentoring ringan,
                             dan sertifikat penyelesaian. BelajarSiko cocok untuk <span
                                 class="font-semibold">mahasiswa</span> yang ingin upgrade skill cepat.</p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start" data-aos="fade-up" data-aos-delay="300">
                             <a href="{{ Route::has('register') ? route('register') : '#' }}"
                                 class="bg-white text-indigo-700 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold text-center transition-all duration-300 transform hover:scale-105">Mulai
                                 Belajar Gratis</a>
@@ -181,7 +191,7 @@
                                 class="border-2 border-white/80 text-white hover:bg-white/10 px-6 py-3 rounded-lg font-semibold text-center transition-all duration-300 transform hover:scale-105">Lihat
                                 Kursus</a>
                         </div>
-                        <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto md:mx-0">
+                        <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto md:mx-0" data-aos="fade-up" data-aos-delay="400">
                             <div class="text-center">
                                 <div class="text-2xl font-bold">100+</div>
                                 <div class="text-xs text-indigo-100">Mahasiswa</div>
@@ -196,15 +206,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="md:w-1/2 flex justify-center">
+                    <div class="md:w-1/2 flex justify-center" data-aos="fade-left" data-aos-delay="200">
                         <div class="relative w-full max-w-lg">
                             <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
                                 alt="Ilustrasi belajar online" class="rounded-2xl shadow-2xl w-full object-cover">
                             <div
-                                class="absolute -bottom-6 -left-6 bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white backdrop-blur-md rounded-xl shadow-xl p-4 flex items-center gap-3 ring-1 ring-black/5">
-                                {{-- [Ubah] Dark mode & styling --}}
+                                class="absolute -bottom-6 -left-6 bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white backdrop-blur-md rounded-xl shadow-xl p-4 flex items-center gap-3 ring-1 ring-black/5"
+                                data-aos="fade-up" data-aos-delay="300">
                                 <div class="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900">
-                                    {{-- [Ubah] Ganti SVG dengan Heroicon --}}
                                     <x-heroicon-s-book-open class="w-5 h-5 text-indigo-600 dark:text-indigo-300" />
                                 </div>
                                 <div>
@@ -221,24 +230,22 @@
         <section id="fitur" class="py-20 lg:py-24 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-14">
-                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Mengapa Memilih BelajarSiko?
-                    </h2> {{-- [Ubah] spasi --}}
-                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Didesain untuk pengalaman belajar terbaik, yang
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3" data-aos="fade-up">Mengapa Memilih BelajarSiko?
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg" data-aos="fade-up" data-aos-delay="100">Didesain untuk pengalaman belajar terbaik, yang
                         fokus pada mahasiswa yang ingin <span class="font-semibold text-indigo-600">cepat paham</span>
                         dan <span class="font-semibold text-indigo-600">siap proyek</span>.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {{-- [Ubah] Ganti SVG dengan Komponen Blade Icon --}}
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
-                        {{-- [Ubah] styling ring --}}
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
                             <x-heroicon-o-user-group class="h-6 w-6 text-indigo-600" />
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Instruktur Berpengalaman</h3>
                         <p class="text-gray-600">Belajar dari praktisi, materi ditata runtut dengan contoh nyata.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="200">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
                             <x-heroicon-o-lock-closed class="h-6 w-6 text-indigo-600" />
                         </div>
@@ -246,31 +253,30 @@
                         <p class="text-gray-600">Beli sekali, belajar selamanya. cocok untuk revisi menjelang ujian.
                         </p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="300">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-                            <x-heroicon-o-sparkles class="h-6 w-6 text-indigo-600" /> {{-- Ganti ikon --}}
+                            <x-heroicon-o-sparkles class="h-6 w-6 text-indigo-600" />
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Pembelajaran Interaktif</h3>
                         <p class="text-gray-600">Kuis, tugas, & forum diskusi. belajar aktif biar nempel.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-                            <x-heroicon-o-check-badge class="h-6 w-6 text-indigo-600" /> {{-- Ganti ikon --}}
+                            <x-heroicon-o-check-badge class="h-6 w-6 text-indigo-600" />
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Sertifikat Resmi</h3>
                         <p class="text-gray-600">Tingkatkan portofolio & LinkedIn dengan bukti kompetensi.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="200">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
                             <x-heroicon-o-arrow-trending-up class="h-6 w-6 text-indigo-600" />
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Konten Terupdate</h3>
                         <p class="text-gray-600">Materi mengikuti tren industri, anti ketinggalan zaman.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5 card-hover" data-aos="fade-up" data-aos-delay="300">
                         <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
                             <x-heroicon-o-chat-bubble-left-right class="h-6 w-6 text-indigo-600" />
-                            {{-- Ganti ikon --}}
                         </div>
                         <h3 class="text-lg font-semibold mb-2 text-gray-900">Komunitas Belajar</h3>
                         <p class="text-gray-600">Belajar bareng teman kampus, lebih semangat & konsisten.</p>
@@ -282,14 +288,13 @@
         <section id="kursus" class="py-20 lg:py-24 bg-gray-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-14">
-                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Kursus Populer</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Pilih jalan ninjamu. Mulai dari basic sampai
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3" data-aos="fade-up">Kursus Populer</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg" data-aos="fade-up" data-aos-delay="100">Pilih jalan ninjamu. Mulai dari basic sampai
                         siap projek nyata.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover">
-                        {{-- [Ubah] styling ring --}}
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover" data-aos="zoom-in" data-aos-delay="100">
                         <img class="w-full h-48 object-cover"
                             src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
                             alt="Web Development Course">
@@ -310,7 +315,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover" data-aos="zoom-in" data-aos-delay="200">
                         <img class="w-full h-48 object-cover"
                             src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
                             alt="Data Science Course">
@@ -331,7 +336,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 card-hover" data-aos="zoom-in" data-aos-delay="300">
                         <img class="w-full h-48 object-cover"
                             src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
                             alt="UI/UX Design Course">
@@ -353,7 +358,7 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-12">
+                <div class="text-center mt-12" data-aos="fade-up">
                     <a href="{{ url('/courses') }}"
                         class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold">
                         Lihat Semua Kursus
@@ -366,13 +371,13 @@
         <section id="testimoni" class="py-20 lg:py-24 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-14">
-                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Apa Kata Mereka?</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Cerita nyata dari mereka yang sudah merasakan
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3" data-aos="fade-up">Apa Kata Mereka?</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg" data-aos="fade-up" data-aos-delay="100">Cerita nyata dari mereka yang sudah merasakan
                         percepatan belajar.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5" data-aos="fade-right" data-aos-delay="100">
                         <div class="flex items-center gap-3 mb-3">
                             <div
                                 class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold flex-shrink-0">
@@ -380,7 +385,6 @@
                             <div>
                                 <h4 class="font-semibold text-gray-900">Ahmad Rizki</h4>
                                 <p class="text-gray-500 text-sm">Mahasiswa Teknik Informatika</p>
-                                {{-- Ubah --}}
                             </div>
                         </div>
                         <div class="flex mb-3">
@@ -391,14 +395,14 @@
                         <p class="text-gray-600 italic">“Kurikulumnya rapi dan langsung to the point. Dari nol sekarang
                             bisa deploy website profesional. Mantap!”</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5" data-aos="fade-up" data-aos-delay="200">
                         <div class="flex items-center gap-3 mb-3">
                             <div
                                 class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold flex-shrink-0">
                                 S</div>
                             <div>
                                 <h4 class="font-semibold text-gray-900">Sari Dewi</h4>
-                                <p class="text-gray-500 text-sm">Mahasiswi DKV</p> {{-- Ubah --}}
+                                <p class="text-gray-500 text-sm">Mahasiswi DKV</p>
                             </div>
                         </div>
                         <div class="flex mb-3">
@@ -409,14 +413,14 @@
                         <p class="text-gray-600 italic">“Materinya ringan, banyak latihan. Cocok banget buat pemula
                             yang mau pindah karier.”</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5">
+                    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm ring-1 ring-gray-900/5" data-aos="fade-left" data-aos-delay="300">
                         <div class="flex items-center gap-3 mb-3">
                             <div
                                 class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold flex-shrink-0">
                                 B</div>
                             <div>
                                 <h4 class="font-semibold text-gray-900">Budi Pratama</h4>
-                                <p class="text-gray-500 text-sm">Mahasiswa Statistika</p> {{-- Ubah --}}
+                                <p class="text-gray-500 text-sm">Mahasiswa Statistika</p>
                             </div>
                         </div>
                         <div class="flex mb-3">
@@ -433,28 +437,26 @@
 
         <section class="py-20 lg:py-24 gradient-bg text-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6">Siap Memulai Perjalanan Belajar
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-6" data-aos="zoom-in">Siap Memulai Perjalanan Belajar
                     Anda?</h2>
-                <p class="text-xl mb-8 max-w-2xl mx-auto text-indigo-100">Gabung sekarang dan rasakan bedanya:
+                <p class="text-xl mb-8 max-w-2xl mx-auto text-indigo-100" data-aos="zoom-in" data-aos-delay="100">Gabung sekarang dan rasakan bedanya:
                     kurikulum fokus praktik, mentor responsif, dan komunitas aktif.</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="zoom-in" data-aos-delay="200">
                     <a href="{{ Route::has('register') ? route('register') : '#' }}"
                         class="bg-white text-indigo-700 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">Daftar
                         Sekarang</a>
                     <a href="{{ url('/courses') }}"
                         class="border-2 border-white text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">Lihat
-                        Kursus Gratis</a> {{-- Ubah link --}}
+                        Kursus Gratis</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-gray-900 text-white pt-16 pb-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-                <!-- Brand + Social -->
-                <div class="lg:col-span-4">
+                <div class="lg:col-span-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-15 h-15 flex items-center justify-center relative bottom-[5px]">
                             <img src="{{ asset('images/logo-sb.svg') }}" alt="BelajarSiko Logo"
@@ -466,7 +468,6 @@
                     <p class="text-gray-400 mb-5 max-w-sm">Platform belajar online untuk mengembangkan keterampilan dan
                         karier Anda.</p>
                     <div class="flex items-center gap-4">
-                        <!-- Twitter -->
                         <a href="#" aria-label="Twitter"
                             class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
@@ -475,9 +476,7 @@
                                     d="M19.633 7.997c.013.176.013.353.013.53 0 5.397-4.11 11.625-11.625 11.625-2.31 0-4.457-.675-6.267-1.845.324.038.636.05.972.05a8.21 8.21 0 0 0 5.094-1.755A4.107 4.107 0 0 1 4.23 13.9a5.19 5.19 0 0 0 .776.063c.36 0 .72-.05 1.058-.138a4.1 4.1 0 0 1-3.29-4.025v-.05a4.14 4.14 0 0 0 1.86.519 4.103 4.103 0 0 1-1.27-5.48 11.65 11.65 0 0 0 8.457 4.287 4.629 4.629 0 0 1-.1-.94A4.1 4.1 0 0 1 16.44 3a8.07 8.07 0 0 0 2.603-.996 4.1 4.1 0 0 1-1.803 2.27 8.19 8.19 0 0 0 2.36-.638 8.8 8.8 0 0 1-2.067 2.36z" />
                             </svg>
                         </a>
-
-                        <!-- Instagram -->
-                        <a href="#" aria-label="Instagram"
+                        <a href="https://www.instagram.com/belajarsiko.id/" aria-label="Instagram"
                             class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -487,8 +486,6 @@
                                     d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zM18.4 4.59a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44z" />
                             </svg>
                         </a>
-
-                        <!-- LinkedIn -->
                         <a href="#" aria-label="LinkedIn"
                             class="text-gray-400 hover:text-indigo-400 transition-transform duration-200 hover:scale-110">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
@@ -500,9 +497,7 @@
                     </div>
                 </div>
 
-
-                <!-- Quick Links -->
-                <div class="lg:col-span-3">
+                <div class="lg:col-span-3" data-aos="fade-up" data-aos-delay="200">
                     <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
                     <ul class="space-y-3 text-gray-300">
                         <li><a href="#beranda" class="flex items-center gap-2 hover:text-white transition-colors"><svg
@@ -535,9 +530,7 @@
                     </ul>
                 </div>
 
-
-                <!-- Categories -->
-                <div class="lg:col-span-3">
+                <div class="lg:col-span-3" data-aos="fade-up" data-aos-delay="300">
                     <h3 class="text-lg font-semibold mb-4">Kategori Kursus</h3>
                     <ul class="space-y-3 text-gray-300">
                         <li><a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><svg
@@ -571,9 +564,7 @@
                     </ul>
                 </div>
 
-
-                <!-- Contact -->
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-2" data-aos="fade-up" data-aos-delay="400">
                     <h3 class="text-lg font-semibold mb-4 text-white">Kontak Kami</h3>
                     <ul class="space-y-3 text-white">
                         <li class="flex items-start gap-2">
@@ -609,15 +600,26 @@
 
             </div>
 
-
             <div class="mt-12 border-t border-gray-800 pt-8">
                 <p class="text-center text-gray-400">&copy; {{ date('Y') }} BelajarSiko. Semua hak cipta
                     dilindungi.</p>
             </div>
     </footer>
 
+    {{-- [BARU] Tambahkan JS untuk AOS --}}
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            
+            // [BARU] Inisialisasi AOS
+            AOS.init({
+                duration: 700, // Durasi animasi dalam milidetik
+                once: true,    // Apakah animasi hanya terjadi sekali
+                offset: 50     // Memicu animasi sedikit lebih awal (50px)
+            });
+
+            // Sisa skrip Anda yang sudah ada...
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const hamburgerIcon = mobileMenuButton.querySelector('svg:first-child');
@@ -637,7 +639,6 @@
                 if (mobileMenu.classList.contains('mobile-menu-visible')) toggleMenu();
             }));
             document.addEventListener('click', (e) => {
-                // Perbaiki logika klik di luar
                 const isClickInsideButton = mobileMenuButton.contains(e.target);
                 const isClickInsideMenu = mobileMenu.contains(e.target);
                 if (!isClickInsideButton && !isClickInsideMenu && mobileMenu.classList.contains(
@@ -646,7 +647,6 @@
                 }
             });
 
-            // Shadow on scroll
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 4) {
                     header.classList.add('shadow');
@@ -655,7 +655,6 @@
                 }
             });
 
-            // Close announcement bar
             const announce = document.getElementById('announce');
             const closeAnn = document.getElementById('close-announce');
             if (closeAnn) {
